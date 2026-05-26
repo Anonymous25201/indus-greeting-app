@@ -1,1 +1,1118 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Indus Wish Generator Pro</title>
+    
+    <!-- Load Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Load html2canvas -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+    
+    <!-- Load Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700&family=Great+Vibes&family=Lora:ital,wght@0,400;0,600;1,400&family=Montserrat:wght@400;600;700;800&family=Playfair+Display:ital,wght@0,600;0,700;1,600&family=Pacifico&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            /* Dynamic Color Variables */
+            --color-bg: #eef2f5;
+            --color-primary: #50b4a6;     
+            --color-ribbon: #008080;      
+            --color-heading: #facc15;     
+            --color-name: #ffffff;        
+            --color-firm: #50b4a6;        
+            --color-date: #64748b;        
+            --color-message: #1e293b;     
+            
+            --theme-heading-font: 'Lora', serif;
+        }
 
+        body {
+            background-color: #f8fafc;
+            font-family: 'Montserrat', sans-serif;
+            text-rendering: optimizeLegibility;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        /* Base Card Container */
+        .card-container {
+            width: 500px;
+            height: 500px;
+            position: relative;
+            background-color: var(--color-bg);
+            margin: 0 auto;
+            overflow: hidden;
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+            flex-shrink: 0;
+            display: flex;
+            flex-direction: column;
+            transition: background-color 0.3s ease;
+        }
+
+        /* Shared Card Elements */
+        .card-header-bg { background-color: var(--color-primary); transition: background-color 0.3s ease; }
+        .text-heading { color: var(--color-heading); font-family: var(--theme-heading-font); }
+        .text-name { color: var(--color-name); }
+        .bg-ribbon { background-color: var(--color-ribbon); }
+        .text-firm { color: var(--color-firm); }
+        .text-date { color: var(--color-date); }
+        .text-message { color: var(--color-message); }
+
+        /* The folded swallowtail ends for Classic Ribbon */
+        .ribbon-classic::before, .ribbon-classic::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            width: 0; height: 0;
+            border-top: 22px solid var(--color-ribbon);
+            border-bottom: 22px solid var(--color-ribbon);
+            transition: border-color 0.3s ease;
+        }
+        .ribbon-classic::before { left: -16px; border-left: 16px solid transparent; }
+        .ribbon-classic::after { right: -16px; border-right: 16px solid transparent; }
+
+        /* Background Patterns */
+        .bg-pattern {
+            position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: 0; opacity: 0.05; pointer-events: none;
+        }
+        .pattern-doodle {
+            background-image: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23000000' fill-opacity='1'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+            background-position: bottom;
+        }
+        .pattern-confetti {
+            background-image: url("data:image/svg+xml,%3Csvg width='100' height='100' viewBox='0 0 100 100' xmlns='http://www.w3.org/2000/svg'%3E%3Ccircle cx='20' cy='20' r='5' fill='%23000'/%3E%3Crect x='60' y='40' width='8' height='8' fill='%23000' transform='rotate(45 64 44)'/%3E%3Cpolygon points='80,80 85,90 75,90' fill='%23000'/%3E%3Ccircle cx='30' cy='80' r='3' fill='%23000'/%3E%3Crect x='80' y='10' width='4' height='12' fill='%23000' transform='rotate(30 82 16)'/%3E%3C/svg%3E");
+            opacity: 0.08;
+        }
+
+        /* Form Scrollbar */
+        .custom-scroll::-webkit-scrollbar { width: 6px; }
+        .custom-scroll::-webkit-scrollbar-track { background: #f1f1f1; }
+        .custom-scroll::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 4px; }
+
+        input[type="color"] {
+            -webkit-appearance: none;
+            appearance: none;
+            border: none;
+            border-radius: 8px;
+            width: 32px; height: 32px;
+            padding: 0;
+            cursor: pointer;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        input[type="color"]::-webkit-color-swatch-wrapper { padding: 0; }
+        input[type="color"]::-webkit-color-swatch { border: 2px solid #e2e8f0; border-radius: 8px; }
+
+        /* -------------------------------------
+           TEMPLATE 1: CLASSIC (Default)
+           ------------------------------------- */
+        .template-classic .photo-mask { border-radius: 50%; width: 130px; height: 130px; border: 4px solid white; margin-top: -65px; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1); }
+        .template-classic .header-container { height: 130px; }
+        .template-classic .ribbon-wrapper { margin-top: 15px; }
+        .template-classic .name-banner { padding: 8px 24px; font-weight: 700; font-size: 1.15rem; display: inline-block; position: relative; box-shadow: 0 4px 6px rgba(0,0,0,0.1); }
+        
+        /* -------------------------------------
+           TEMPLATE 2: FESTIVE PARTY
+           ------------------------------------- */
+        .template-festive .bg-pattern { background-image: url("data:image/svg+xml,%3Csvg width='100' height='100' viewBox='0 0 100 100' xmlns='http://www.w3.org/2000/svg'%3E%3Ccircle cx='20' cy='20' r='5' fill='%23000'/%3E%3Crect x='60' y='40' width='8' height='8' fill='%23000' transform='rotate(45 64 44)'/%3E%3Cpolygon points='80,80 85,90 75,90' fill='%23000'/%3E%3Ccircle cx='30' cy='80' r='3' fill='%23000'/%3E%3Crect x='80' y='10' width='4' height='12' fill='%23000' transform='rotate(30 82 16)'/%3E%3C/svg%3E"); opacity: 0.08; height: 100%; top: 0; }
+        .template-festive .header-container { height: 110px; border-bottom: 4px dashed rgba(255,255,255,0.3); padding-top: 1.5rem; }
+        .template-festive .text-heading { font-family: 'Pacifico', cursive; font-size: 2rem; transform: rotate(-2deg); text-shadow: 2px 2px 0px rgba(0,0,0,0.1); line-height: 1.1; }
+        .template-festive .photo-mask { border-radius: 20px; width: 140px; height: 140px; border: 5px solid white; margin-top: -50px; transform: rotate(3deg); box-shadow: 0 10px 15px -3px rgba(0,0,0,0.1); }
+        .template-festive .name-banner { padding: 8px 30px; border-radius: 50px; font-weight: 800; font-size: 1.15rem; margin-top: 15px; display: inline-block; box-shadow: 0 4px 10px rgba(0,0,0,0.15); }
+        .template-festive .ribbon-classic::before, .template-festive .ribbon-classic::after { display: none; }
+
+        /* -------------------------------------
+           TEMPLATE 3: MODERN POLAROID
+           ------------------------------------- */
+        .template-polaroid .header-container { display: none; }
+        .template-polaroid { padding: 15px; padding-bottom: 0; }
+        .template-polaroid .photo-mask { width: 100%; height: 230px; border-radius: 0; border: 12px solid white; border-bottom: 35px solid white; box-shadow: 0 8px 20px rgba(0,0,0,0.15); margin-top: 0; background-color: white; }
+        .template-polaroid .bg-pattern { display: none; }
+        .template-polaroid .text-heading { font-size: 1.6rem; margin-top: 10px; margin-bottom: 0px; line-height: 1.2; }
+        .template-polaroid .name-banner { background: transparent !important; color: var(--color-name) !important; padding: 0; box-shadow: none; font-family: 'Great Vibes', cursive; font-size: 2.2rem; margin-top: -35px; position: relative; z-index: 20; text-shadow: 1px 1px 0px white, -1px -1px 0px white; }
+        .template-polaroid .ribbon-classic::before, .template-polaroid .ribbon-classic::after { display: none; }
+        .template-polaroid .text-firm { margin-top: 2px; font-size: 0.95rem; }
+        .template-polaroid .text-message { padding: 0 15px; margin-top: 8px; font-size: 0.75rem; text-align: center; }
+
+        /* -------------------------------------
+           TEMPLATE 4: ELEGANT ARCH
+           ------------------------------------- */
+        .template-elegant { border: 12px solid var(--color-primary); }
+        .template-elegant .header-container { background: transparent; height: auto; padding-top: 20px; padding-bottom: 10px; }
+        .template-elegant .text-heading { color: var(--color-primary); font-size: 1.6rem; letter-spacing: 0.2em; line-height: 1.2; }
+        .template-elegant .photo-mask { border-radius: 100px 100px 0 0; width: 150px; height: 180px; border: 4px solid var(--color-primary); border-bottom: none; margin-top: 0; padding: 4px; background: transparent; }
+        .template-elegant .photo-mask img { border-radius: 96px 96px 0 0; }
+        .template-elegant .name-banner { background: transparent !important; color: var(--color-name) !important; font-family: 'Cinzel', serif; font-size: 1.3rem; box-shadow: none; padding: 0; margin-top: 10px; border-bottom: 1px solid var(--color-primary); padding-bottom: 4px; }
+        .template-elegant .ribbon-classic::before, .template-elegant .ribbon-classic::after { display: none; }
+        .template-elegant .text-firm { font-family: 'Montserrat', sans-serif; font-size: 0.8rem; letter-spacing: 2px; text-transform: uppercase; margin-top: 8px; }
+        .template-elegant .text-message { font-family: 'Lora', serif; font-style: italic; font-size: 0.8rem; padding: 0 35px; margin-top: 10px; text-align: center; }
+        .template-elegant .corner-accent { display: none; } 
+
+    </style>
+</head>
+<body class="text-slate-800 antialiased h-screen flex flex-col bg-slate-200">
+
+    <!-- Authentication Screen (Salesman) -->
+    <div id="auth-screen" class="fixed inset-0 bg-slate-900 z-50 flex items-center justify-center">
+        <div class="bg-white p-8 rounded-2xl shadow-2xl w-full max-w-md mx-4">
+            <div class="text-center mb-8">
+                <h2 class="text-2xl font-bold text-slate-800">Indus Partner Portal</h2>
+                <p class="text-slate-500 text-sm mt-2">Salesman Login</p>
+            </div>
+            
+            <div id="auth-error" class="hidden mb-4 bg-red-50 text-red-600 text-sm p-3 rounded-lg border border-red-200"></div>
+
+            <form id="auth-form" class="space-y-4">
+                <div>
+                    <label class="block text-xs font-semibold text-slate-600 mb-1">Email / Username</label>
+                    <input type="email" id="auth-email" required class="w-full px-4 py-3 bg-slate-50 border border-slate-300 rounded-xl outline-none focus:border-teal-500 focus:ring-1 focus:ring-teal-500 transition-all" placeholder="salesman@indus.com">
+                </div>
+                <div>
+                    <label class="block text-xs font-semibold text-slate-600 mb-1">Password</label>
+                    <input type="password" id="auth-password" required class="w-full px-4 py-3 bg-slate-50 border border-slate-300 rounded-xl outline-none focus:border-teal-500 focus:ring-1 focus:ring-teal-500 transition-all" placeholder="••••••••">
+                </div>
+                
+                <button type="submit" id="auth-submit-btn" class="w-full bg-teal-600 hover:bg-teal-700 text-white font-bold py-3 rounded-xl shadow-lg transition-all mt-4">
+                    Login securely
+                </button>
+            </form>
+
+            <div class="mt-6 text-center">
+                <button id="show-admin-login-btn" class="text-slate-400 hover:text-slate-600 text-xs font-semibold underline-offset-4 hover:underline transition-colors">
+                    Admin Portal Access
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Admin Login Screen -->
+    <div id="admin-login-screen" class="hidden fixed inset-0 bg-slate-900 z-50 flex items-center justify-center">
+        <div class="bg-white p-8 rounded-2xl shadow-2xl w-full max-w-md mx-4 border-t-8 border-indigo-600">
+            <div class="text-center mb-8">
+                <h2 class="text-2xl font-bold text-slate-800">Admin Portal</h2>
+                <p class="text-slate-500 text-sm mt-2">Login to manage salesmen accounts</p>
+            </div>
+            
+            <div id="admin-login-error" class="hidden mb-4 bg-red-50 text-red-600 text-sm p-3 rounded-lg border border-red-200"></div>
+
+            <form id="admin-login-form" class="space-y-4">
+                <div>
+                    <label class="block text-xs font-semibold text-slate-600 mb-1">Admin Email</label>
+                    <input type="email" id="admin-login-email" required class="w-full px-4 py-3 bg-slate-50 border border-slate-300 rounded-xl outline-none focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500 transition-all" placeholder="admin@indus.com">
+                </div>
+                <div>
+                    <label class="block text-xs font-semibold text-slate-600 mb-1">Admin Password</label>
+                    <input type="password" id="admin-login-password" required class="w-full px-4 py-3 bg-slate-50 border border-slate-300 rounded-xl outline-none focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500 transition-all" placeholder="••••••••">
+                </div>
+                
+                <button type="submit" id="admin-login-submit-btn" class="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-3 rounded-xl shadow-lg transition-all mt-4">
+                    Enter Admin Panel
+                </button>
+
+                <button type="button" id="admin-setup-btn" class="w-full bg-emerald-600 hover:bg-emerald-700 text-white font-bold py-3 rounded-xl shadow-lg transition-all mt-2">
+                    First-Time Setup: Create Admin Account
+                </button>
+            </form>
+            
+            <div class="mt-6 text-center">
+                <button id="back-to-salesman-login-btn" class="text-indigo-600 hover:text-indigo-800 text-sm font-semibold underline-offset-4 hover:underline">
+                    &larr; Back to Salesman Login
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Admin Dashboard Screen -->
+    <div id="admin-dashboard-screen" class="hidden fixed inset-0 bg-slate-100 z-50 flex flex-col">
+        <header class="bg-indigo-900 text-white shadow-md z-10 p-4 flex justify-between items-center">
+            <h1 class="text-xl font-bold flex items-center gap-2">
+                <span class="text-indigo-400">🛡️</span> Indus Admin Dashboard
+            </h1>
+            <button id="admin-logout-btn" class="bg-indigo-800 hover:bg-indigo-700 px-4 py-2 rounded-lg text-sm font-semibold transition-colors border border-indigo-700">Logout Admin</button>
+        </header>
+        
+        <div class="flex-1 p-8 overflow-y-auto">
+            <div class="max-w-2xl mx-auto bg-white p-8 rounded-2xl shadow-lg border border-slate-200">
+                <h2 class="text-2xl font-bold text-slate-800 mb-6 border-b border-slate-200 pb-2">Create New Salesman Account</h2>
+                <p class="text-sm text-slate-500 mb-6">Create credentials here. Salesmen will use these to log into the main portal.</p>
+                
+                <div id="admin-create-success" class="hidden mb-6 bg-green-50 text-green-700 text-sm p-4 rounded-lg border border-green-200 font-semibold flex items-center gap-2">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
+                    Salesman account created successfully!
+                </div>
+                <div id="admin-create-error" class="hidden mb-6 bg-red-50 text-red-600 text-sm p-4 rounded-lg border border-red-200"></div>
+
+                <form id="admin-create-form" class="space-y-5">
+                    <div>
+                        <label class="block text-sm font-semibold text-slate-700 mb-1">Salesman Email</label>
+                        <input type="email" id="new-salesman-email" required class="w-full px-4 py-3 bg-slate-50 border border-slate-300 rounded-xl outline-none focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500" placeholder="salesman1@indus.com">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-semibold text-slate-700 mb-1">Temporary Password</label>
+                        <input type="text" id="new-salesman-password" required minlength="6" class="w-full px-4 py-3 bg-slate-50 border border-slate-300 rounded-xl outline-none focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500" placeholder="Password (min 6 characters)">
+                    </div>
+                    <button type="submit" id="admin-create-submit-btn" class="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-3 rounded-xl shadow-lg transition-all mt-4">
+                        Create Salesman Account
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main Content (Hidden until logged in) -->
+    <div id="main-app" class="hidden flex-1 flex-col h-full overflow-hidden">
+        
+        <!-- Header -->
+        <header class="bg-slate-900 text-white shadow-md z-10 relative shrink-0">
+            <div class="max-w-7xl mx-auto px-4 h-16 flex items-center justify-between">
+                <h1 class="text-xl font-bold tracking-wide flex items-center gap-2">
+                    <span class="text-teal-400">✧</span> Indus Wish Generator Pro
+                </h1>
+                <div class="flex items-center gap-4">
+                    <span id="user-email-display" class="text-sm text-slate-300 hidden md:block"></span>
+                    <button id="logout-btn" class="text-sm bg-slate-800 hover:bg-slate-700 px-4 py-2 rounded-lg border border-slate-700 transition-colors">Logout</button>
+                </div>
+            </div>
+        </header>
+
+        <main class="flex-1 flex flex-col md:flex-row overflow-hidden">
+            
+            <!-- Left Column: Form Controls -->
+            <div class="w-full md:w-[450px] bg-white border-r border-slate-200 flex flex-col h-full z-10 shadow-lg overflow-y-auto custom-scroll">
+                <div class="p-6">
+                    
+                    <form id="wish-form" class="space-y-8">
+                    
+                        <!-- 1. Templates & Occasion -->
+                        <section class="space-y-4">
+                            <h2 class="text-lg font-bold text-slate-800 border-b-2 border-teal-500 pb-1 inline-block">1. Design & Occasion</h2>
+                            
+                            <!-- Occasion -->
+                            <div class="grid grid-cols-2 gap-3">
+                                <label class="cursor-pointer">
+                                    <input type="radio" name="occasion" value="birthday" class="peer sr-only" checked>
+                                    <div class="text-center px-4 py-2 border border-slate-200 rounded-lg peer-checked:border-teal-500 peer-checked:bg-teal-50 peer-checked:text-teal-700 transition-all font-semibold text-sm">
+                                        🎂 Birthday
+                                    </div>
+                                </label>
+                                <label class="cursor-pointer">
+                                    <input type="radio" name="occasion" value="anniversary" class="peer sr-only">
+                                    <div class="text-center px-4 py-2 border border-slate-200 rounded-lg peer-checked:border-teal-500 peer-checked:bg-teal-50 peer-checked:text-teal-700 transition-all font-semibold text-sm">
+                                        🎊 Anniversary
+                                    </div>
+                                </label>
+                            </div>
+
+                            <!-- Template Picker -->
+                            <div>
+                                <label class="block text-xs font-semibold text-slate-500 uppercase tracking-wider mb-2">Card Layout</label>
+                                <div class="grid grid-cols-2 gap-3">
+                                    <label class="cursor-pointer">
+                                        <input type="radio" name="template-layout" value="template-classic" class="peer sr-only" checked>
+                                        <div class="p-2 border-2 border-slate-100 rounded-lg peer-checked:border-teal-500 hover:bg-slate-50 transition-all text-center">
+                                            <div class="w-full h-10 bg-slate-200 rounded mb-1 relative overflow-hidden">
+                                                <div class="w-full h-3 bg-teal-500 absolute top-0"></div>
+                                                <div class="w-5 h-5 rounded-full bg-slate-400 absolute top-2 left-1/2 -translate-x-1/2 border-2 border-white"></div>
+                                            </div>
+                                            <span class="text-xs font-bold text-slate-700">Classic</span>
+                                        </div>
+                                    </label>
+                                    <label class="cursor-pointer">
+                                        <input type="radio" name="template-layout" value="template-festive" class="peer sr-only">
+                                        <div class="p-2 border-2 border-slate-100 rounded-lg peer-checked:border-teal-500 hover:bg-slate-50 transition-all text-center">
+                                            <div class="w-full h-10 bg-slate-200 rounded mb-1 relative overflow-hidden">
+                                                <div class="w-full h-3 bg-orange-400 absolute top-0"></div>
+                                                <div class="w-5 h-5 rounded bg-slate-400 absolute top-2 left-1/2 -translate-x-1/2 border-2 border-white transform rotate-3"></div>
+                                            </div>
+                                            <span class="text-xs font-bold text-slate-700">Festive</span>
+                                        </div>
+                                    </label>
+                                    <label class="cursor-pointer">
+                                        <input type="radio" name="template-layout" value="template-polaroid" class="peer sr-only">
+                                        <div class="p-2 border-2 border-slate-100 rounded-lg peer-checked:border-teal-500 hover:bg-slate-50 transition-all text-center">
+                                            <div class="w-full h-10 bg-slate-200 rounded mb-1 p-1">
+                                                <div class="w-full h-6 bg-slate-400"></div>
+                                            </div>
+                                            <span class="text-xs font-bold text-slate-700">Polaroid</span>
+                                        </div>
+                                    </label>
+                                    <label class="cursor-pointer">
+                                        <input type="radio" name="template-layout" value="template-elegant" class="peer sr-only">
+                                        <div class="p-2 border-2 border-slate-100 rounded-lg peer-checked:border-teal-500 hover:bg-slate-50 transition-all text-center">
+                                            <div class="w-full h-10 bg-slate-50 border border-slate-300 rounded mb-1 relative flex justify-center items-end pb-1">
+                                                <div class="w-5 h-7 bg-slate-300 rounded-t-full border border-slate-400"></div>
+                                            </div>
+                                            <span class="text-xs font-bold text-slate-700">Elegant</span>
+                                        </div>
+                                    </label>
+                                </div>
+                            </div>
+                        </section>
+
+                        <!-- 2. Master Color Controls -->
+                        <section class="space-y-4 bg-slate-50 p-4 rounded-xl border border-slate-200">
+                            <h2 class="text-lg font-bold text-slate-800 border-b-2 border-teal-500 pb-1 inline-block">2. Theme Colors</h2>
+                            
+                            <div class="grid grid-cols-2 gap-x-4 gap-y-3">
+                                <div class="flex items-center gap-3">
+                                    <input type="color" id="picker-bg" value="#eef2f5" data-var="--color-bg">
+                                    <label class="text-xs font-semibold text-slate-600 cursor-pointer" for="picker-bg">Card Bg</label>
+                                </div>
+                                <div class="flex items-center gap-3">
+                                    <input type="color" id="picker-primary" value="#50b4a6" data-var="--color-primary">
+                                    <label class="text-xs font-semibold text-slate-600 cursor-pointer" for="picker-primary">Primary Header</label>
+                                </div>
+                                <div class="flex items-center gap-3">
+                                    <input type="color" id="picker-ribbon" value="#008080" data-var="--color-ribbon">
+                                    <label class="text-xs font-semibold text-slate-600 cursor-pointer" for="picker-ribbon">Banner/Ribbon</label>
+                                </div>
+                                
+                                <div class="col-span-2 border-t border-slate-200 my-1"></div>
+
+                                <div class="flex items-center gap-3">
+                                    <input type="color" id="picker-heading" value="#facc15" data-var="--color-heading">
+                                    <label class="text-xs font-semibold text-slate-600 cursor-pointer" for="picker-heading">Heading Text</label>
+                                </div>
+                                <div class="flex items-center gap-3">
+                                    <input type="color" id="picker-name" value="#ffffff" data-var="--color-name">
+                                    <label class="text-xs font-semibold text-slate-600 cursor-pointer" for="picker-name">Name Text</label>
+                                </div>
+                                <div class="flex items-center gap-3">
+                                    <input type="color" id="picker-firm" value="#50b4a6" data-var="--color-firm">
+                                    <label class="text-xs font-semibold text-slate-600 cursor-pointer" for="picker-firm">Firm Text</label>
+                                </div>
+                                <div class="flex items-center gap-3">
+                                    <input type="color" id="picker-date" value="#64748b" data-var="--color-date">
+                                    <label class="text-xs font-semibold text-slate-600 cursor-pointer" for="picker-date">Date Text</label>
+                                </div>
+                                <div class="flex items-center gap-3 col-span-2">
+                                    <input type="color" id="picker-message" value="#1e293b" data-var="--color-message">
+                                    <label class="text-xs font-semibold text-slate-600 cursor-pointer" for="picker-message">Wish Message Text</label>
+                                </div>
+                            </div>
+
+                            <div class="pt-2">
+                                <label for="heading-font" class="block text-xs font-semibold text-slate-500 uppercase tracking-wider mb-1">Heading Font Style</label>
+                                <select id="heading-font" class="w-full px-3 py-2 text-sm border border-slate-300 rounded-md outline-none focus:border-teal-500 font-sans">
+                                    <option value="'Lora', serif">Lora (Classic Serif)</option>
+                                    <option value="'Cinzel', serif">Cinzel (Formal Uppercase)</option>
+                                    <option value="'Great Vibes', cursive">Great Vibes (Elegant Cursive)</option>
+                                    <option value="'Pacifico', cursive">Pacifico (Playful)</option>
+                                    <option value="'Montserrat', sans-serif">Montserrat (Modern Sans)</option>
+                                </select>
+                            </div>
+                        </section>
+
+                        <!-- 3. Directory & Details -->
+                        <section class="space-y-4">
+                            <h2 class="text-lg font-bold text-slate-800 border-b-2 border-teal-500 pb-1 inline-block">3. Party Details</h2>
+                            
+                            <!-- Cloud Directory Select -->
+                            <div class="bg-teal-50 p-3 rounded-lg border border-teal-200">
+                                <label for="party-select" class="block text-xs font-bold text-teal-800 uppercase tracking-wider mb-1">☁️ Load from Directory</label>
+                                <select id="party-select" class="w-full px-3 py-2 text-sm border border-teal-300 rounded-md outline-none focus:border-teal-500 font-sans bg-white">
+                                    <option value="">-- Add Manually / Select Party --</option>
+                                    <!-- Options injected via Firestore -->
+                                </select>
+                            </div>
+
+                            <!-- Text Fields -->
+                            <div class="space-y-3">
+                                <div>
+                                    <label for="name" class="block text-xs font-semibold text-slate-500 uppercase tracking-wider mb-1">Person's Name <span class="text-red-500">*</span></label>
+                                    <input type="text" id="name" placeholder="Mr. Ravi Ji" class="w-full px-4 py-2 text-sm border border-slate-300 rounded-md outline-none focus:border-teal-500" required />
+                                </div>
+                                <div>
+                                    <label for="firm" class="block text-xs font-semibold text-slate-500 uppercase tracking-wider mb-1">Firm & Location <span class="text-red-500">*</span></label>
+                                    <input type="text" id="firm" placeholder="Akshay, Jaipur" class="w-full px-4 py-2 text-sm border border-slate-300 rounded-md outline-none focus:border-teal-500" required />
+                                </div>
+                                <div>
+                                    <label for="wish-date" class="block text-xs font-semibold text-slate-500 uppercase tracking-wider mb-1">Date</label>
+                                    <input type="date" id="wish-date" class="w-full px-4 py-2 text-sm border border-slate-300 rounded-md outline-none focus:border-teal-500" />
+                                </div>
+                                
+                                <button type="button" id="save-party-btn" class="w-full py-2 bg-white border-2 border-teal-600 text-teal-700 text-sm font-bold rounded-lg hover:bg-teal-50 transition-colors flex items-center justify-center gap-2">
+                                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7H5a2 2 0 00-2 2v9a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-3m-1 4l-3 3m0 0l-3-3m3 3V4"></path></svg>
+                                    Save Party to Directory
+                                </button>
+                                <div id="save-msg" class="text-xs text-center font-semibold text-teal-600 hidden">Saved successfully!</div>
+                            </div>
+
+                            <div>
+                                <label for="message" class="block text-xs font-semibold text-slate-500 uppercase tracking-wider mb-1 mt-2">Custom Message</label>
+                                <textarea id="message" rows="3" class="w-full px-4 py-2 text-sm border border-slate-300 rounded-md outline-none focus:border-teal-500 leading-relaxed"></textarea>
+                            </div>
+
+                        </section>
+
+                        <!-- 4. Photo Framing & Branding -->
+                        <section class="space-y-4">
+                            <h2 class="text-lg font-bold text-slate-800 border-b-2 border-teal-500 pb-1 inline-block">4. Images & Branding</h2>
+                            
+                            <div class="bg-slate-50 p-4 rounded-xl border border-slate-200 space-y-4">
+                                <div>
+                                    <label class="block text-xs font-semibold text-slate-500 uppercase tracking-wider mb-1">Profile Photo</label>
+                                    <input id="photo-upload" type="file" class="block w-full text-xs text-slate-500 file:mr-3 file:py-1.5 file:px-3 file:rounded-md file:border-0 file:text-xs file:font-semibold file:bg-teal-100 file:text-teal-700 hover:file:bg-teal-200 cursor-pointer border border-slate-300 rounded-md p-1 bg-white" accept="image/*" />
+                                </div>
+
+                                <div class="grid grid-cols-2 gap-4">
+                                    <div>
+                                        <div class="flex justify-between text-xs font-semibold text-slate-600 mb-1">
+                                            <span>Zoom</span>
+                                            <span id="zoom-value">1.0x</span>
+                                        </div>
+                                        <input type="range" id="photo-zoom" min="0.5" max="3" step="0.1" value="1" class="w-full accent-teal-600">
+                                    </div>
+                                    <div>
+                                        <label class="block text-xs font-semibold text-slate-600 mb-1">Fit Mode</label>
+                                        <select id="fit-mode" class="w-full text-xs px-2 py-1 border border-slate-300 rounded outline-none">
+                                            <option value="cover">Fill Area (Cover)</option>
+                                            <option value="contain">Show Whole (Contain)</option>
+                                        </select>
+                                    </div>
+                                    <div>
+                                        <div class="flex justify-between text-xs font-semibold text-slate-600 mb-1"><span>Pan X</span><span id="move-x-value">0</span></div>
+                                        <input type="range" id="photo-move-x" min="-150" max="150" step="5" value="0" class="w-full accent-teal-600">
+                                    </div>
+                                    <div>
+                                        <div class="flex justify-between text-xs font-semibold text-slate-600 mb-1"><span>Pan Y</span><span id="move-y-value">0</span></div>
+                                        <input type="range" id="photo-move-y" min="-150" max="150" step="5" value="0" class="w-full accent-teal-600">
+                                    </div>
+                                </div>
+
+                                <!-- Logo Upload -->
+                                <div class="mt-4 border-t border-slate-200 pt-4">
+                                    <label class="block text-xs font-semibold text-slate-500 uppercase tracking-wider mb-1">Company Logo (Bottom)</label>
+                                    <input id="logo-upload" type="file" class="block w-full text-xs text-slate-500 file:mr-3 file:py-1.5 file:px-3 file:rounded-md file:border-0 file:text-xs file:font-semibold file:bg-slate-200 file:text-slate-700 hover:file:bg-slate-300 cursor-pointer border border-slate-300 rounded-md p-1 bg-white" accept="image/*" />
+                                    <p class="text-[10px] text-slate-400 mt-1">This will be saved permanently on your device.</p>
+                                </div>
+                            </div>
+                        </section>
+                    </form>
+                </div>
+                
+                <div class="p-4 bg-white border-t border-slate-200 mt-auto sticky bottom-0">
+                    <button id="download-btn" class="w-full bg-teal-600 hover:bg-teal-700 text-white font-bold py-3 px-4 rounded-xl shadow-lg transition-all flex items-center justify-center gap-2">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"></path></svg>
+                        <span id="download-text">Download Wish Card</span>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Right Column: Live Preview -->
+            <div class="flex-1 flex flex-col items-center justify-center p-4 overflow-y-auto relative bg-[url('data:image/svg+xml,%3Csvg width=\'20\' height=\'20\' viewBox=\'0 0 20 20\' xmlns=\'http://www.w3.org/2000/svg\'%3E%3Cg fill=\'%23cbd5e1\' fill-opacity=\'0.4\' fill-rule=\'evenodd\'%3E%3Ccircle cx=\'3\' cy=\'3\' r=\'3\'/%3E%3Ccircle cx=\'13\' cy=\'13\' r=\'3\'/%3E%3C/g%3E%3C/svg%3E')]">
+                
+                <div class="mb-4 text-slate-500 text-sm font-semibold tracking-wide uppercase bg-white px-4 py-1 rounded-full shadow-sm">Live Preview</div>
+
+                <div id="card-preview" class="card-container template-classic flex-col relative text-center">
+                    
+                    <div class="bg-pattern pattern-doodle shrink-0"></div>
+
+                    <div class="header-container card-header-bg relative w-full shrink-0 z-0 flex flex-col items-center justify-start pt-6 text-center transition-all">
+                        <svg class="corner-accent absolute top-4 left-4 w-12 h-12 z-5" viewBox="0 0 100 100" preserveAspectRatio="xMidYMid meet">
+                            <polyline points="100,0 0,0 0,100" fill="none" stroke="rgba(255,255,255,0.3)" stroke-width="8" />
+                        </svg>
+                        <svg class="corner-accent absolute top-4 right-4 w-12 h-12 z-5" viewBox="0 0 100 100" preserveAspectRatio="xMidYMid meet" style="transform: scaleX(-1);">
+                            <polyline points="100,0 0,0 0,100" fill="none" stroke="rgba(255,255,255,0.3)" stroke-width="8" />
+                        </svg>
+
+                        <h1 id="preview-occasion" class="text-heading text-3xl block shrink-0 w-full px-4 relative z-10" style="letter-spacing: 0.1em; margin: 0; line-height: 1.3;">
+                            HAPPY BIRTHDAY
+                        </h1>
+                    </div>
+
+                    <div class="relative z-10 flex flex-col items-center flex-1 shrink-0 w-full text-center">
+                        <div class="photo-mask overflow-hidden bg-slate-100 shrink-0 mx-auto flex items-center justify-center relative transition-all duration-300">
+                            <img id="preview-photo" src="https://placehold.co/400x400/cbd5e1/475569?text=Upload+Photo" alt="Profile" class="block" crossorigin="anonymous" style="width: 100%; height: 100%; object-fit: cover; object-position: center; transform: scale(1) translate(0px, 0px);">
+                        </div>
+
+                        <div class="ribbon-wrapper shrink-0 w-full text-center z-20">
+                            <div id="preview-name" class="name-banner ribbon-classic bg-ribbon text-name transition-colors">
+                                Mr. Ravi Ji
+                            </div>
+                        </div>
+
+                        <p id="preview-firm" class="text-firm text-lg mt-2 font-serif block shrink-0 w-full text-center transition-colors font-bold" style="margin-bottom: 0;">
+                            Akshay, Jaipur
+                        </p>
+
+                        <p id="preview-date" class="text-date text-xs mt-1 font-semibold block shrink-0 w-full text-center transition-colors"></p>
+
+                        <div class="px-6 mt-2 shrink-0 w-full text-center z-10">
+                            <p id="preview-message" class="text-message text-xs font-semibold leading-snug font-sans block shrink-0 mx-auto transition-colors text-center" style="margin: 0;">
+                                May your day be as bright, strong, and inspiring as the role you play in our journey. Your dedication and partnership mean a lot to us at Indus Footwear.
+                            </p>
+                        </div>
+                    </div>
+
+                    <div class="relative z-10 w-full pb-3 pt-2 flex justify-center items-end mt-auto shrink-0">
+                        <img id="preview-logo" src="https://placehold.co/200x50/transparent/0f172a?text=INDUS+FOOTWEAR" alt="Indus Logo" class="h-[55px] w-auto object-contain shrink-0" crossorigin="anonymous">
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
+        import { getAuth, signInWithCustomToken, signInWithEmailAndPassword, createUserWithEmailAndPassword, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
+        import { getFirestore, collection, addDoc, getDocs, onSnapshot } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
+
+      const firebaseConfig = {
+    apiKey: "AIzaSyAWr8tSoGfTZ8oGDF0LCBYkeGyZ6EwDrZU",
+    authDomain: "indus-footwear-greeting-app.firebaseapp.com",
+    projectId: "indus-footwear-greeting-app",
+    storageBucket: "indus-footwear-greeting-app.firebasestorage.app",
+    messagingSenderId: "3654408313",
+    appId: "1:3654408313:web:cbe827dfe8f5f2b9f81ca8"
+  };
+        // Initialize Firebase
+        const appId = typeof __app_id !== 'undefined' ? __app_id : 'indus-wish-app';
+        const canvasFirebaseConfig = typeof __firebase_config !== 'undefined' ? JSON.parse(__firebase_config) : {};
+        
+        const app = initializeApp(firebaseConfig || canvasFirebaseConfig);
+        const auth = getAuth(app);
+        const db = getFirestore(app);
+
+        // UI Auth Elements
+        const authScreen = document.getElementById('auth-screen');
+        const mainApp = document.getElementById('main-app');
+        const authForm = document.getElementById('auth-form');
+        const authEmail = document.getElementById('auth-email');
+        const authPassword = document.getElementById('auth-password');
+        const authSubmitBtn = document.getElementById('auth-submit-btn');
+        const authError = document.getElementById('auth-error');
+        const userEmailDisplay = document.getElementById('user-email-display');
+        const logoutBtn = document.getElementById('logout-btn');
+        const partySelect = document.getElementById('party-select');
+
+        // Admin UI Elements
+        const showAdminLoginBtn = document.getElementById('show-admin-login-btn');
+        const adminLoginScreen = document.getElementById('admin-login-screen');
+        const backToSalesmanBtn = document.getElementById('back-to-salesman-login-btn');
+        
+        const adminLoginForm = document.getElementById('admin-login-form');
+        const adminLoginEmail = document.getElementById('admin-login-email');
+        const adminLoginPassword = document.getElementById('admin-login-password');
+        const adminLoginError = document.getElementById('admin-login-error');
+        const adminLoginSubmitBtn = document.getElementById('admin-login-submit-btn');
+        const adminSetupBtn = document.getElementById('admin-setup-btn');
+
+        const adminDashboardScreen = document.getElementById('admin-dashboard-screen');
+        const adminLogoutBtn = document.getElementById('admin-logout-btn');
+        
+        const adminCreateForm = document.getElementById('admin-create-form');
+        const newSalesmanEmail = document.getElementById('new-salesman-email');
+        const newSalesmanPassword = document.getElementById('new-salesman-password');
+        const adminCreateSuccess = document.getElementById('admin-create-success');
+        const adminCreateError = document.getElementById('admin-create-error');
+        const adminCreateSubmitBtn = document.getElementById('admin-create-submit-btn');
+
+        let unsubscribeParties = null;
+        let partiesData = [];
+        
+        // Admin State
+        let isAdminMode = false;
+        let storedAdminEmail = '';
+        let storedAdminPass = '';
+
+        // SECURITY: Define your strict Admin Email here
+        const ADMIN_EMAIL = 'admin@indus.com';
+
+        // Auth state observer
+        onAuthStateChanged(auth, (user) => {
+            if (user) {
+                if (isAdminMode) {
+                    // Route to Admin Dashboard
+                    authScreen.classList.add('hidden');
+                    adminLoginScreen.classList.add('hidden');
+                    mainApp.classList.add('hidden');
+                    mainApp.classList.remove('flex');
+                    adminDashboardScreen.classList.remove('hidden');
+                    adminDashboardScreen.classList.add('flex');
+                } else {
+                    // Route to normal Salesman app
+                    authScreen.classList.add('hidden');
+                    adminLoginScreen.classList.add('hidden');
+                    adminDashboardScreen.classList.add('hidden');
+                    adminDashboardScreen.classList.remove('flex');
+                    mainApp.classList.remove('hidden');
+                    mainApp.classList.add('flex');
+                    userEmailDisplay.textContent = user.email || 'Salesman';
+                    
+                    loadDirectory(user);
+                }
+            } else {
+                // Logged out
+                if (!isAdminMode) {
+                    authScreen.classList.remove('hidden');
+                }
+                adminLoginScreen.classList.add('hidden');
+                adminDashboardScreen.classList.add('hidden');
+                adminDashboardScreen.classList.remove('flex');
+                mainApp.classList.add('hidden');
+                mainApp.classList.remove('flex');
+                if (unsubscribeParties) unsubscribeParties();
+            }
+        });
+
+        // Navigation toggles
+        showAdminLoginBtn.addEventListener('click', () => {
+            authScreen.classList.add('hidden');
+            adminLoginScreen.classList.remove('hidden');
+            adminLoginScreen.classList.add('flex');
+        });
+
+        backToSalesmanBtn.addEventListener('click', () => {
+            adminLoginScreen.classList.add('hidden');
+            adminLoginScreen.classList.remove('flex');
+            authScreen.classList.remove('hidden');
+        });
+
+        function getFriendlyErrorMessage(error) {
+            if (error.code === 'auth/operation-not-allowed') {
+                return "Setup Required: Email/Password login is not enabled in your Firebase project. Please enable it in the Firebase Console under Authentication -> Sign-in method.";
+            }
+            if (error.code === 'auth/invalid-credential' || error.code === 'auth/wrong-password' || error.code === 'auth/user-not-found') {
+                return "Incorrect email or password.";
+            }
+            return error.message.replace('Firebase:', '').trim();
+        }
+
+        // Handle Salesman Login
+        authForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            authError.classList.add('hidden');
+            
+            if (authEmail.value.toLowerCase() === ADMIN_EMAIL) {
+                authError.textContent = "Access Denied: Please use the Admin Portal below.";
+                authError.classList.remove('hidden');
+                return;
+            }
+
+            authSubmitBtn.disabled = true;
+            authSubmitBtn.textContent = 'Processing...';
+            isAdminMode = false;
+
+            try {
+                await signInWithEmailAndPassword(auth, authEmail.value, authPassword.value);
+                authForm.reset();
+            } catch (error) {
+                authError.textContent = getFriendlyErrorMessage(error);
+                authError.classList.remove('hidden');
+            } finally {
+                authSubmitBtn.disabled = false;
+                authSubmitBtn.textContent = 'Login securely';
+            }
+        });
+
+        // Handle Admin Login
+        adminLoginForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            adminLoginError.classList.add('hidden');
+            
+            if (adminLoginEmail.value.toLowerCase() !== ADMIN_EMAIL) {
+                adminLoginError.textContent = "Unauthorized: You do not have Admin privileges.";
+                adminLoginError.classList.remove('hidden');
+                return;
+            }
+
+            adminLoginSubmitBtn.disabled = true;
+            adminLoginSubmitBtn.textContent = 'Authenticating...';
+            
+            try {
+                storedAdminEmail = adminLoginEmail.value;
+                storedAdminPass = adminLoginPassword.value;
+                isAdminMode = true; 
+                
+                await signInWithEmailAndPassword(auth, storedAdminEmail, storedAdminPass);
+                adminLoginForm.reset();
+            } catch (error) {
+                adminLoginError.textContent = getFriendlyErrorMessage(error);
+                adminLoginError.classList.remove('hidden');
+                isAdminMode = false;
+            } finally {
+                adminLoginSubmitBtn.disabled = false;
+                adminLoginSubmitBtn.textContent = 'Enter Admin Panel';
+            }
+        });
+
+        // Handle First-Time Admin Registration
+        adminSetupBtn.addEventListener('click', async () => {
+            adminLoginError.classList.add('hidden');
+            
+            if (adminLoginEmail.value.toLowerCase() !== ADMIN_EMAIL) {
+                adminLoginError.textContent = `Setup Error: Email must be exactly ${ADMIN_EMAIL}`;
+                adminLoginError.classList.remove('hidden');
+                return;
+            }
+
+            if (adminLoginPassword.value.length < 6) {
+                adminLoginError.textContent = "Setup Error: Password must be at least 6 characters.";
+                adminLoginError.classList.remove('hidden');
+                return;
+            }
+
+            adminSetupBtn.disabled = true;
+            adminSetupBtn.textContent = 'Creating Admin...';
+            
+            try {
+                await createUserWithEmailAndPassword(auth, adminLoginEmail.value, adminLoginPassword.value);
+                
+                storedAdminEmail = adminLoginEmail.value;
+                storedAdminPass = adminLoginPassword.value;
+                isAdminMode = true;
+                
+                adminLoginForm.reset();
+            } catch (error) {
+                if (error.code === 'auth/email-already-in-use') {
+                    adminLoginError.textContent = "Admin account already exists! Please use the blue 'Enter Admin Panel' button to login.";
+                } else {
+                    adminLoginError.textContent = getFriendlyErrorMessage(error);
+                }
+                adminLoginError.classList.remove('hidden');
+                isAdminMode = false;
+            } finally {
+                adminSetupBtn.disabled = false;
+                adminSetupBtn.textContent = 'First-Time Setup: Create Admin Account';
+            }
+        });
+
+        // Handle Admin Logout
+        adminLogoutBtn.addEventListener('click', async () => {
+            isAdminMode = false;
+            storedAdminEmail = '';
+            storedAdminPass = '';
+            await signOut(auth);
+            adminDashboardScreen.classList.add('hidden');
+            adminDashboardScreen.classList.remove('flex');
+            authScreen.classList.remove('hidden');
+        });
+
+        // Handle Admin Creating a Salesman
+        adminCreateForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            adminCreateError.classList.add('hidden');
+            adminCreateSuccess.classList.add('hidden');
+            adminCreateSubmitBtn.disabled = true;
+            adminCreateSubmitBtn.textContent = 'Creating...';
+
+            const newEmail = newSalesmanEmail.value;
+            const newPass = newSalesmanPassword.value;
+
+            try {
+                await createUserWithEmailAndPassword(auth, newEmail, newPass);
+                
+                await signOut(auth);
+                await signInWithEmailAndPassword(auth, storedAdminEmail, storedAdminPass);
+                
+                adminCreateForm.reset();
+                adminCreateSuccess.classList.remove('hidden');
+                setTimeout(() => adminCreateSuccess.classList.add('hidden'), 5000);
+                
+            } catch (error) {
+                adminCreateError.textContent = error.message.replace('Firebase:', '').trim();
+                adminCreateError.classList.remove('hidden');
+            } finally {
+                adminCreateSubmitBtn.disabled = false;
+                adminCreateSubmitBtn.textContent = 'Create Salesman Account';
+            }
+        });
+
+        // Main App Logout
+        logoutBtn.addEventListener('click', () => {
+            isAdminMode = false;
+            signOut(auth);
+        });
+
+        function loadDirectory(user) {
+            const partiesRef = collection(db, 'artifacts', appId, 'public', 'data', 'parties');
+            
+            unsubscribeParties = onSnapshot(partiesRef, (snapshot) => {
+                partiesData = [];
+                partySelect.innerHTML = '<option value="">-- Add Manually / Select Party --</option>';
+                
+                snapshot.forEach(doc => {
+                    const data = doc.data();
+                    partiesData.push({ id: doc.id, ...data });
+                });
+
+                partiesData.sort((a, b) => (a.name || '').localeCompare(b.name || ''));
+
+                partiesData.forEach(party => {
+                    const option = document.createElement('option');
+                    option.value = party.id;
+                    option.textContent = `${party.name} - ${party.firm}`;
+                    partySelect.appendChild(option);
+                });
+            }, (error) => {
+                console.error("Error loading directory:", error);
+            });
+        }
+
+        document.getElementById('save-party-btn').addEventListener('click', async () => {
+            if (!auth.currentUser) return;
+            const name = document.getElementById('name').value.trim();
+            const firm = document.getElementById('firm').value.trim();
+            const date = document.getElementById('wish-date').value;
+            const btn = document.getElementById('save-party-btn');
+            const msg = document.getElementById('save-msg');
+
+            if (!name) return;
+
+            btn.disabled = true;
+            btn.innerHTML = 'Saving...';
+
+            try {
+                const partiesRef = collection(db, 'artifacts', appId, 'public', 'data', 'parties');
+                await addDoc(partiesRef, {
+                    name,
+                    firm,
+                    dob: date || null,
+                    addedBy: auth.currentUser.email
+                });
+                msg.classList.remove('hidden');
+                setTimeout(() => msg.classList.add('hidden'), 3000);
+            } catch (err) {
+                console.error("Save error:", err);
+            } finally {
+                btn.disabled = false;
+                btn.innerHTML = `<svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7H5a2 2 0 00-2 2v9a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-3m-1 4l-3 3m0 0l-3-3m3 3V4"></path></svg> Save Party to Directory`;
+            }
+        });
+
+
+        document.addEventListener('DOMContentLoaded', () => {
+            const messages = {
+                birthday: "May your day be as bright, strong, and inspiring as the role you play in our journey. Your dedication and partnership mean a lot to us at Indus Footwear.",
+                anniversary: "Wishing you a joyous anniversary! May your bond grow stronger with each passing year. Your continued support and partnership mean the world to us at Indus Footwear."
+            };
+
+            const imageStyleState = { fit: 'cover', zoom: 1.0, x: 0, y: 0 };
+
+            const formInputs = {
+                occasion: document.getElementsByName('occasion'),
+                templateLayout: document.getElementsByName('template-layout'),
+                photo: document.getElementById('photo-upload'),
+                logo: document.getElementById('logo-upload'),
+                fitMode: document.getElementById('fit-mode'),
+                zoom: document.getElementById('photo-zoom'),
+                moveX: document.getElementById('photo-move-x'),
+                moveY: document.getElementById('photo-move-y'),
+                name: document.getElementById('name'),
+                firm: document.getElementById('firm'),
+                message: document.getElementById('message'),
+                date: document.getElementById('wish-date'),
+                headingFont: document.getElementById('heading-font')
+            };
+
+            const previewElements = {
+                card: document.getElementById('card-preview'),
+                occasion: document.getElementById('preview-occasion'),
+                photo: document.getElementById('preview-photo'),
+                logo: document.getElementById('preview-logo'),
+                name: document.getElementById('preview-name'),
+                firm: document.getElementById('preview-firm'),
+                message: document.getElementById('preview-message'),
+                date: document.getElementById('preview-date')
+            };
+
+            // Init defaults & load saved logo
+            formInputs.message.value = messages.birthday;
+            const today = new Date();
+            formInputs.date.value = today.toISOString().split('T')[0];
+            previewElements.date.textContent = today.toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' });
+            
+            const savedLogo = localStorage.getItem('indus_logo');
+            if (savedLogo) {
+                previewElements.logo.src = savedLogo;
+            }
+
+            // Handle Directory Selection
+            partySelect.addEventListener('change', (e) => {
+                const selectedId = e.target.value;
+                if (!selectedId) return;
+                
+                const party = partiesData.find(p => p.id === selectedId);
+                if (party) {
+                    formInputs.name.value = party.name || '';
+                    formInputs.firm.value = party.firm || '';
+                    if (party.dob) {
+                        formInputs.date.value = party.dob;
+                        const dateObj = new Date(party.dob);
+                        previewElements.date.textContent = dateObj.toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' });
+                    }
+                    previewElements.name.textContent = party.name || 'Mr. Ravi Ji';
+                    previewElements.firm.textContent = party.firm || 'Akshay, Jaipur';
+                }
+            });
+
+            // Template Switching
+            formInputs.templateLayout.forEach(radio => {
+                radio.addEventListener('change', (e) => {
+                    previewElements.card.classList.remove('template-classic', 'template-festive', 'template-polaroid', 'template-elegant');
+                    previewElements.card.classList.add(e.target.value);
+                    
+                    if(e.target.value === 'template-polaroid' || e.target.value === 'template-elegant') {
+                        previewElements.name.classList.remove('bg-ribbon');
+                    } else {
+                        previewElements.name.classList.add('bg-ribbon');
+                    }
+                });
+            });
+
+            // Color Pickers Logic
+            document.querySelectorAll('input[type="color"]').forEach(picker => {
+                picker.addEventListener('input', (e) => {
+                    document.documentElement.style.setProperty(e.target.dataset.var, e.target.value);
+                });
+            });
+
+            formInputs.headingFont.addEventListener('change', (e) => {
+                document.documentElement.style.setProperty('--theme-heading-font', e.target.value);
+            });
+
+            // Image Adjustments
+            function applyImageStyles() {
+                const img = previewElements.photo;
+                img.style.objectFit = imageStyleState.fit;
+                img.style.transform = `scale(${imageStyleState.zoom}) translate(${imageStyleState.x}px, ${imageStyleState.y}px)`;
+            }
+
+            formInputs.fitMode.addEventListener('change', (e) => { imageStyleState.fit = e.target.value; applyImageStyles(); });
+            formInputs.zoom.addEventListener('input', (e) => { imageStyleState.zoom = parseFloat(e.target.value); document.getElementById('zoom-value').textContent = `${imageStyleState.zoom.toFixed(1)}x`; applyImageStyles(); });
+            formInputs.moveX.addEventListener('input', (e) => { imageStyleState.x = parseInt(e.target.value); document.getElementById('move-x-value').textContent = imageStyleState.x; applyImageStyles(); });
+            formInputs.moveY.addEventListener('input', (e) => { imageStyleState.y = parseInt(e.target.value); document.getElementById('move-y-value').textContent = imageStyleState.y; applyImageStyles(); });
+
+            // Text Updates
+            formInputs.name.addEventListener('input', (e) => { previewElements.name.textContent = e.target.value.trim() || 'Mr. Ravi Ji'; partySelect.value = ""; });
+            formInputs.firm.addEventListener('input', (e) => { previewElements.firm.textContent = e.target.value.trim() || 'Akshay, Jaipur'; partySelect.value = ""; });
+            formInputs.message.addEventListener('input', (e) => previewElements.message.textContent = e.target.value.trim() || messages.birthday);
+            
+            formInputs.date.addEventListener('input', (e) => {
+                partySelect.value = "";
+                if(e.target.value) {
+                    previewElements.date.textContent = new Date(e.target.value).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' });
+                } else {
+                    previewElements.date.textContent = '';
+                }
+            });
+
+            formInputs.occasion.forEach(radio => {
+                radio.addEventListener('change', (e) => {
+                    if (e.target.value === 'birthday') {
+                        previewElements.occasion.textContent = 'HAPPY BIRTHDAY';
+                        formInputs.message.value = messages.birthday;
+                    } else {
+                        previewElements.occasion.textContent = 'HAPPY ANNIVERSARY';
+                        formInputs.message.value = messages.anniversary;
+                    }
+                    previewElements.message.textContent = formInputs.message.value;
+                });
+            });
+
+            // Profile Photo Upload
+            formInputs.photo.addEventListener('change', (e) => {
+                const file = e.target.files[0];
+                if (file) {
+                    const reader = new FileReader();
+                    reader.onload = function(event) {
+                        previewElements.photo.src = event.target.result;
+                        imageStyleState.zoom = 1.0; imageStyleState.x = 0; imageStyleState.y = 0;
+                        formInputs.zoom.value = 1; formInputs.moveX.value = 0; formInputs.moveY.value = 0;
+                        document.getElementById('zoom-value').textContent = "1.0x";
+                        document.getElementById('move-x-value').textContent = "0";
+                        document.getElementById('move-y-value').textContent = "0";
+                        applyImageStyles();
+                    };
+                    reader.readAsDataURL(file);
+                }
+            });
+
+            // Company Logo Upload
+            formInputs.logo.addEventListener('change', (e) => {
+                const file = e.target.files[0];
+                if (file) {
+                    const reader = new FileReader();
+                    reader.onload = function(event) {
+                        const imgData = event.target.result;
+                        previewElements.logo.src = imgData;
+                        localStorage.setItem('indus_logo', imgData); // Save permanently
+                    };
+                    reader.readAsDataURL(file);
+                }
+            });
+
+            // Download Logic with strict alignment rules and field validation
+            const downloadBtn = document.getElementById('download-btn');
+            const downloadText = document.getElementById('download-text');
+            downloadBtn.addEventListener('click', () => {
+                
+                // Field Validation
+                const nameVal = formInputs.name.value.trim();
+                const firmVal = formInputs.firm.value.trim();
+                
+                if (!nameVal || !firmVal) {
+                    const originalText = downloadText.innerHTML;
+                    downloadText.innerHTML = `⚠️ Name & Firm Required`;
+                    
+                    downloadBtn.classList.remove('bg-teal-600', 'hover:bg-teal-700');
+                    downloadBtn.classList.add('bg-red-600', 'hover:bg-red-700');
+                    
+                    setTimeout(() => {
+                        downloadText.innerHTML = originalText;
+                        downloadBtn.classList.add('bg-teal-600', 'hover:bg-teal-700');
+                        downloadBtn.classList.remove('bg-red-600', 'hover:bg-red-700');
+                    }, 3000);
+                    
+                    // Scroll up to the form so they see what to fill
+                    document.getElementById('wish-form').scrollIntoView({ behavior: 'smooth' });
+                    return;
+                }
+                
+                const originalText = downloadText.innerHTML;
+                downloadText.innerHTML = `Generating...`;
+                downloadBtn.disabled = true;
+
+                // Fix html2canvas scroll offset bug
+                window.scrollTo(0, 0);
+
+                setTimeout(() => {
+                    html2canvas(previewElements.card, {
+                        scale: 2, 
+                        useCORS: true, 
+                        backgroundColor: document.documentElement.style.getPropertyValue('--color-bg') || '#eef2f5',
+                        scrollY: 0,
+                        scrollX: 0,
+                        windowWidth: 500, // Forces rigid dimension to prevent layout shifts
+                        windowHeight: 500,
+                        logging: false
+                    }).then(canvas => {
+                        const imgData = canvas.toDataURL('image/png');
+                        const link = document.createElement('a');
+                        const userName = nameVal.replace(/\s+/g, '_') || 'Partner';
+                        const occasion = document.querySelector('input[name="occasion"]:checked').value;
+                        
+                        link.download = `Indus_${occasion}_${userName}.png`;
+                        link.href = imgData;
+                        link.click();
+                        
+                        downloadText.innerHTML = originalText;
+                        downloadBtn.disabled = false;
+                    }).catch(err => {
+                        console.error("Error generating image:", err);
+                        downloadText.innerHTML = `❌ Error Generating`;
+                        setTimeout(() => {
+                            downloadText.innerHTML = originalText;
+                            downloadBtn.disabled = false;
+                        }, 3000);
+                    });
+                }, 200);
+            });
+        });
+    </script>
+</body>
+</html>
