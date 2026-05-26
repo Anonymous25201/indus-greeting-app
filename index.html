@@ -147,9 +147,34 @@
         .template-elegant .text-message { font-family: 'Lora', serif; font-style: italic; font-size: 0.8rem; padding: 0 35px; margin-top: 10px; text-align: center; }
         .template-elegant .corner-accent { display: none; } 
 
+        /* Mobile Optimization for Preview */
+        .preview-scale-wrapper {
+            display: flex;
+            justify-content: center;
+            width: 100%;
+            height: 500px;
+            transition: height 0.3s ease;
+        }
+        #card-preview {
+            transform-origin: top center;
+            transition: transform 0.3s ease, background-color 0.3s ease;
+        }
+        @media (max-width: 768px) {
+            .preview-scale-wrapper { height: 380px; }
+            #card-preview { transform: scale(0.72); }
+        }
+        @media (max-width: 500px) {
+            .preview-scale-wrapper { height: 330px; }
+            #card-preview { transform: scale(0.62); }
+        }
+        @media (max-width: 400px) {
+            .preview-scale-wrapper { height: 280px; }
+            #card-preview { transform: scale(0.52); }
+        }
+
     </style>
 </head>
-<body class="text-slate-800 antialiased h-screen flex flex-col bg-slate-200">
+<body class="text-slate-800 antialiased h-[100dvh] flex flex-col bg-slate-200">
 
     <!-- Authentication Screen (Salesman) -->
     <div id="auth-screen" class="fixed inset-0 bg-slate-900 z-50 flex items-center justify-center">
@@ -265,7 +290,7 @@
         <header class="bg-slate-900 text-white shadow-md z-10 relative shrink-0">
             <div class="max-w-7xl mx-auto px-4 h-16 flex items-center justify-between">
                 <h1 class="text-xl font-bold tracking-wide flex items-center gap-2">
-                    <span class="text-teal-400">✧</span> Indus Wish Generator Pro
+                    <span class="text-teal-400">✧</span> <span class="hidden sm:inline">Indus Wish Generator Pro</span><span class="sm:hidden">Indus Pro</span>
                 </h1>
                 <div class="flex items-center gap-4">
                     <span id="user-email-display" class="text-sm text-slate-300 hidden md:block"></span>
@@ -274,13 +299,13 @@
             </div>
         </header>
 
-        <main class="flex-1 flex flex-col md:flex-row overflow-hidden">
+        <main class="flex-1 flex flex-col-reverse md:flex-row overflow-hidden relative">
             
             <!-- Left Column: Form Controls -->
-            <div class="w-full md:w-[450px] bg-white border-r border-slate-200 flex flex-col h-full z-10 shadow-lg overflow-y-auto custom-scroll">
-                <div class="p-6">
+            <div class="w-full md:w-[450px] bg-white border-t md:border-t-0 md:border-r border-slate-200 flex flex-col flex-1 md:h-full z-20 shadow-[0_-8px_20px_-5px_rgba(0,0,0,0.1)] md:shadow-lg overflow-y-auto custom-scroll shrink-0 md:shrink">
+                <div class="p-4 md:p-6">
                     
-                    <form id="wish-form" class="space-y-8">
+                    <form id="wish-form" class="space-y-6 md:space-y-8">
                     
                         <!-- 1. Templates & Occasion -->
                         <section class="space-y-4">
@@ -499,14 +524,14 @@
             </div>
 
             <!-- Right Column: Live Preview -->
-            <div class="flex-1 flex flex-col items-center justify-center p-4 overflow-y-auto relative bg-[url('data:image/svg+xml,%3Csvg width=\'20\' height=\'20\' viewBox=\'0 0 20 20\' xmlns=\'http://www.w3.org/2000/svg\'%3E%3Cg fill=\'%23cbd5e1\' fill-opacity=\'0.4\' fill-rule=\'evenodd\'%3E%3Ccircle cx=\'3\' cy=\'3\' r=\'3\'/%3E%3Ccircle cx=\'13\' cy=\'13\' r=\'3\'/%3E%3C/g%3E%3C/svg%3E')]">
+            <div class="w-full md:flex-1 flex flex-col items-center justify-start md:justify-center p-2 md:p-4 overflow-y-auto relative z-10 shrink-0 h-auto md:h-full bg-[url('data:image/svg+xml,%3Csvg width=\'20\' height=\'20\' viewBox=\'0 0 20 20\' xmlns=\'http://www.w3.org/2000/svg\'%3E%3Cg fill=\'%23cbd5e1\' fill-opacity=\'0.4\' fill-rule=\'evenodd\'%3E%3Ccircle cx=\'3\' cy=\'3\' r=\'3\'/%3E%3Ccircle cx=\'13\' cy=\'13\' r=\'3\'/%3E%3C/g%3E%3C/svg%3E')]">
                 
-                <div class="mb-4 text-slate-500 text-sm font-semibold tracking-wide uppercase bg-white px-4 py-1 rounded-full shadow-sm">Live Preview</div>
+                <div class="mb-2 md:mb-4 mt-2 md:mt-0 text-slate-500 text-xs md:text-sm font-semibold tracking-wide uppercase bg-white/90 backdrop-blur-sm px-4 py-1 rounded-full shadow-sm z-20">Live Preview</div>
 
-                <div id="card-preview" class="card-container template-classic flex-col relative text-center">
-                    
-                    <div class="bg-pattern pattern-doodle shrink-0"></div>
-
+                <div id="preview-scale-wrapper" class="preview-scale-wrapper">
+                    <div id="card-preview" class="card-container template-classic flex-col relative text-center">
+                        
+                        <div class="bg-pattern pattern-doodle shrink-0"></div>
                     <div class="header-container card-header-bg relative w-full shrink-0 z-0 flex flex-col items-center justify-start pt-6 text-center transition-all">
                         <svg class="corner-accent absolute top-4 left-4 w-12 h-12 z-5" viewBox="0 0 100 100" preserveAspectRatio="xMidYMid meet">
                             <polyline points="100,0 0,0 0,100" fill="none" stroke="rgba(255,255,255,0.3)" stroke-width="8" />
@@ -547,6 +572,7 @@
                     <div class="relative z-10 w-full pb-3 pt-2 flex justify-center items-end mt-auto shrink-0">
                         <img id="preview-logo" src="https://placehold.co/200x50/transparent/0f172a?text=INDUS+FOOTWEAR" alt="Indus Logo" class="h-[55px] w-auto object-contain shrink-0" crossorigin="anonymous">
                     </div>
+                </div>
                 </div>
             </div>
         </main>
@@ -1077,6 +1103,11 @@
                         scrollX: 0,
                         windowWidth: 500,
                         windowHeight: 500,
+                        onclone: (documentClone) => {
+                            // Ensure the cloned node exports at 100% scale regardless of mobile viewport size
+                            const card = documentClone.getElementById('card-preview');
+                            if (card) card.style.transform = 'scale(1)';
+                        },
                         logging: false
                     }).then(canvas => {
                         const imgData = canvas.toDataURL('image/png');
