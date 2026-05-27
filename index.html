@@ -18,7 +18,7 @@
     <!-- Load Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&family=Great+Vibes&family=Lora:ital,wght@0,400;0,600;1,400&family=Montserrat:wght@400;500;600;700;800&family=Playfair+Display:ital,wght@0,600;0,700;1,600&family=Pacifico&family=Quicksand:wght@500;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&family=Great+Vibes&family=Lora:ital,wght@0,400;0,600;1,400&family=Montserrat:wght@400;500;600;700;800;900&family=Playfair+Display:ital,wght@0,600;0,700;1,600&family=Pacifico&family=Quicksand:wght@500;700&display=swap" rel="stylesheet">
     
     <style>
         :root {
@@ -37,7 +37,7 @@
         /* --- BASE CARD CONTAINER --- */
         .card-container {
             width: 500px;
-            height: 650px; /* Slightly taller to accommodate the full design nicely */
+            height: 650px;
             position: relative;
             margin: 0 auto;
             overflow: hidden;
@@ -57,62 +57,57 @@
         .inner-photo { width: 100%; height: 100%; object-fit: cover; object-position: center; display: block; }
         
         /* Helper to hide elements based on layout */
-        .show-on-elegant, .show-on-premium, .show-on-baby, .show-on-baby-boy, .show-on-baby-girl, .show-on-text-only { display: none; }
+        .show-on-elegant, .show-on-premium, .show-on-premium-vector, .show-on-baby, .show-on-baby-boy, .show-on-baby-girl, .show-on-text-only, .show-on-birthday { display: none; }
 
         /* Default state for top logo - Hidden to prevent appearing on birthday/premium */
         .top-logo-wrapper { display: none; }
 
         /* =========================================
            LAYOUT 1: CORPORATE RIBBON (Birthday Default)
-           Based on Atul Ji / Dinesh Ji Posters
            ========================================= */
         .layout-birthday { background: linear-gradient(to bottom, #4bb5a8 32%, #eaeff4 32%); color: #1e293b; }
+        .layout-birthday .show-on-birthday { display: block; }
         
-        .layout-birthday .card-header { height: 32%; display: flex; align-items: center; justify-content: center; position: relative; }
-        
-        /* White Corner Accents */
-        .layout-birthday .card-header::before {
-            content: ""; position: absolute; top: 15px; left: 15px; width: 40px; height: 40px;
-            border-top: 6px solid white; border-left: 6px solid white;
-        }
-        .layout-birthday .card-header::after {
-            content: ""; position: absolute; top: 15px; right: 15px; width: 40px; height: 40px;
-            border-top: 6px solid white; border-right: 6px solid white;
+        /* Birthday Pattern Overlay for the bottom section */
+        .layout-birthday::before {
+            content: ""; position: absolute; left: 0; right: 0; bottom: 0; top: 32%;
+            background-image: url("data:image/svg+xml,%3Csvg width='200' height='200' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' stroke='%230f766e' stroke-width='1.5' opacity='0.12'%3E%3C!-- Balloon --%3E%3Cpath d='M40 50 C 30 30, 70 30, 60 50 C 55 60, 45 60, 40 50 Z'/%3E%3Cpath d='M50 56 L50 80 M45 65 Q 55 70 45 75'/%3E%3C!-- Gift --%3E%3Crect x='130' y='120' width='40' height='40' rx='2'/%3E%3Cpath d='M130 140 H170 M150 120 V160'/%3E%3Cpath d='M150 120 C 140 110, 135 125, 150 120 C 160 110, 165 125, 150 120'/%3E%3C!-- Star --%3E%3Cpath d='M160 40 L163 48 L172 48 L165 53 L167 61 L160 56 L153 61 L155 53 L148 48 L157 48 Z'/%3E%3C!-- Confetti --%3E%3Cpath d='M20 150 L30 160 M90 20 L100 30 M80 160 A 10 10 0 0 1 100 170'/%3E%3C!-- Party Hat --%3E%3Cpath d='M90 100 L110 100 L100 70 Z'/%3E%3Ccircle cx='100' cy='67' r='3'/%3E%3C/g%3E%3C/svg%3E");
+            background-size: 250px;
+            pointer-events: none;
+            z-index: 0;
         }
 
-        .layout-birthday .text-heading { color: #fde047; font-family: 'Cinzel', serif; font-size: 2.5rem; letter-spacing: 0.1em; text-shadow: 1px 1px 2px rgba(0,0,0,0.2); margin-top: -20px;}
+        .layout-birthday .card-header { height: 32%; display: flex; align-items: center; justify-content: center; position: relative; z-index: 20; }
+        .layout-birthday .text-heading { color: #fde047; font-family: 'Cinzel', serif; font-size: 2.5rem; letter-spacing: 0.1em; text-shadow: 1px 1px 2px rgba(0,0,0,0.4); margin-top: -20px; z-index: 20;}
         
-        .layout-birthday .photo-wrapper { margin-top: -65px; z-index: 10; display: flex; justify-content: center; }
+        .layout-birthday .photo-wrapper { margin-top: -65px; z-index: 20; display: flex; justify-content: center; position: relative;}
         .layout-birthday .photo-mask { border-radius: 50%; width: 150px; height: 150px; border: 4px solid white; box-shadow: 0 4px 10px rgba(0,0,0,0.1); background-color: #cbd5e1; overflow: hidden;}
         
-        .layout-birthday .name-wrapper { text-align: center; margin-top: 15px; z-index: 10; }
+        .layout-birthday .name-wrapper { text-align: center; margin-top: 15px; z-index: 20; position: relative;}
         .layout-birthday .name-banner { 
             background-color: #00897b; color: white; padding: 10px 40px; font-weight: 800; font-size: 1.3rem; 
             display: inline-block; position: relative;
-            /* Swallowtail ribbon effect */
             clip-path: polygon(15px 0, calc(100% - 15px) 0, 100% 50%, calc(100% - 15px) 100%, 15px 100%, 0 50%);
         }
         
         .layout-birthday .text-firm { text-align: center; color: #00897b; font-family: 'Lora', serif; font-size: 1.2rem; font-weight: 600; margin-top: 10px; }
         .layout-birthday .text-date { text-align: center; color: #64748b; font-size: 0.8rem; font-weight: 600; margin-top: 2px; }
-        .layout-birthday .message-wrapper { padding: 0 40px; margin-top: 15px; flex-grow: 1; display: flex; flex-direction: column; justify-content: flex-start; }
+        .layout-birthday .message-wrapper { padding: 0 40px; margin-top: 15px; flex-grow: 1; display: flex; flex-direction: column; justify-content: flex-start; z-index: 20; position: relative;}
         .layout-birthday .text-message { font-weight: 600; line-height: 1.5; color: #1e293b; }
-        .layout-birthday .bottom-logo-wrapper { display: flex; justify-content: center; align-items: flex-end; padding-bottom: 25px; height: 80px;}
+        .layout-birthday .bottom-logo-wrapper { display: flex; justify-content: center; align-items: flex-end; padding-bottom: 25px; height: 95px; z-index: 20; position: relative;}
 
         /* =========================================
            LAYOUT 2: ELEGANT WAVES (Anniversary)
-           Based on Vijay Mangani / Narayan Das Posters
            ========================================= */
         .layout-anniversary { background: linear-gradient(135deg, #f0fdf4 0%, #e0f2fe 50%, #fef3c7 100%); color: #0f172a; border: 15px solid white; }
         
-        /* Pseudo-element for wavy background texture */
         .layout-anniversary::before {
             content: ""; position: absolute; inset: 0; opacity: 0.1; pointer-events: none;
             background-image: repeating-radial-gradient(circle at 0 0, transparent 0, #00897b 10px), repeating-linear-gradient(#fbbf24, #fbbf24);
         }
 
         .layout-anniversary .show-on-elegant { display: block; }
-        .layout-anniversary .bottom-logo-wrapper { display: none; } /* Logo moves to top */
+        .layout-anniversary .bottom-logo-wrapper { display: none; }
         
         .layout-anniversary .top-logo-wrapper { display: flex; justify-content: center; padding-top: 25px; z-index: 10;}
         .layout-anniversary .card-header { text-align: center; margin-top: 15px; z-index: 10; }
@@ -131,10 +126,10 @@
 
         /* =========================================
            LAYOUT 3: PREMIUM GOLD (Birthday Option)
-           Based on Kalaram Prajapat Poster
            ========================================= */
         .layout-premium { background-color: #111827; color: #f8fafc; border: 10px solid #111827;}
         .layout-premium::before { content: ""; position: absolute; inset: 0; background-image: radial-gradient(#fbbf24 1px, transparent 1px); background-size: 40px 40px; opacity: 0.05; }
+        .layout-premium .show-on-premium-vector { display: block; }
         
         .layout-premium .show-on-premium { display: flex; justify-content: center; align-items: center; gap: 10px; margin-top: 10px; z-index: 10;}
         .layout-premium .show-on-premium span { height: 1px; width: 40px; background-color: #fbbf24; }
@@ -152,12 +147,10 @@
         
         .layout-premium .message-wrapper { padding: 0 40px; margin-top: 20px; flex-grow: 1; z-index: 10;}
         .layout-premium .text-message { font-weight: 500; line-height: 1.6; color: #e2e8f0; font-style: italic;}
-        .layout-premium .bottom-logo-wrapper { display: flex; justify-content: center; align-items: flex-end; padding-bottom: 20px; height: 70px; z-index: 10;
-
+        .layout-premium .bottom-logo-wrapper { display: flex; justify-content: center; align-items: flex-end; padding-bottom: 20px; height: 85px; z-index: 10; }
 
         /* =========================================
            LAYOUT 4: BABY BOY & GIRL
-           Based on Mamadou Poster
            ========================================= */
         .layout-baby-boy { background: linear-gradient(180deg, #f0f9ff 0%, #e0f2fe 100%); color: #0c4a6e; }
         .layout-baby-girl { background: linear-gradient(180deg, #fdf2f8 0%, #fce7f3 100%); color: #831843; }
@@ -169,7 +162,7 @@
 
         .layout-baby-boy .card-header, .layout-baby-girl .card-header { padding-top: 40px; text-align: center; z-index: 10; }
         .layout-baby-boy .text-heading, .layout-baby-girl .text-heading { font-family: 'Lora', serif; font-size: 2rem; font-weight: 600; margin-bottom: 5px;}
-        .layout-baby-boy .text-heading { color: #8b5cf6; } /* Soft purple/brown */
+        .layout-baby-boy .text-heading { color: #8b5cf6; } 
         .layout-baby-girl .text-heading { color: #d946ef; }
 
         .layout-baby-boy .name-banner, .layout-baby-girl .name-banner { font-family: 'Quicksand', sans-serif; font-size: 1.8rem; font-weight: 700; background: transparent; padding: 0; }
@@ -183,19 +176,19 @@
         .layout-baby-boy .photo-wrapper, .layout-baby-girl .photo-wrapper { margin-top: 10px; z-index: 10; display: flex; justify-content: center; }
         .layout-baby-boy .photo-mask, .layout-baby-girl .photo-mask { border-radius: 24px; width: 160px; height: 160px; border: 6px solid white; box-shadow: 0 10px 20px rgba(0,0,0,0.08); overflow: hidden; transform: rotate(2deg);}
         
-        .layout-baby-boy .text-firm, .layout-baby-girl .text-firm { display: none; } /* Hide firm for baby templates usually */
+        .layout-baby-boy .text-firm, .layout-baby-girl .text-firm { display: none; } 
         
         .layout-baby-boy .message-wrapper, .layout-baby-girl .message-wrapper { padding: 0 45px; margin-top: 25px; flex-grow: 1; z-index: 10;}
         .layout-baby-boy .text-message, .layout-baby-girl .text-message { font-family: 'Lora', serif; font-weight: 500; line-height: 1.6; }
         
-        .layout-baby-boy .bottom-logo-wrapper, .layout-baby-girl .bottom-logo-wrapper { display: flex; justify-content: center; align-items: flex-end; padding-bottom: 30px; height: 80px; z-index: 10;}
+        .layout-baby-boy .bottom-logo-wrapper, .layout-baby-girl .bottom-logo-wrapper { display: flex; justify-content: center; align-items: flex-end; padding-bottom: 30px; height: 90px; z-index: 10;}
 
         /* =========================================
            LAYOUT 5: TEXT ONLY BIRTHDAY
            ========================================= */
         .layout-text-only { background: radial-gradient(circle at top, #1e3a8a 0%, #020617 100%); color: #f8fafc; border: none; outline: none; }
         .layout-text-only .show-on-text-only { display: block; }
-        .layout-text-only .photo-wrapper { display: none; } /* Hide the photo completely */
+        .layout-text-only .photo-wrapper { display: none; }
         .layout-text-only .card-header { padding-top: 80px; text-align: center; z-index: 10; }
         .layout-text-only .text-heading { color: #fbbf24; font-family: 'Cinzel', serif; font-size: 3.5rem; font-weight: 700; letter-spacing: 0.1em; line-height: 1.1; text-shadow: 0 4px 15px rgba(251,191,36,0.3); }
         .layout-text-only .text-heading::after { content: ''; display: block; width: 100px; height: 3px; background-color: #fbbf24; margin: 25px auto 0; box-shadow: 0 0 10px rgba(251,191,36,0.5); }
@@ -203,8 +196,13 @@
         .layout-text-only .name-banner { background: transparent; color: #fde047; font-family: 'Great Vibes', cursive; font-size: 3rem; font-weight: 400; padding: 0; clip-path: none; text-shadow: 0 2px 10px rgba(253,224,71,0.2); }
         .layout-text-only .text-firm { text-align: center; color: #94a3b8; font-family: 'Montserrat', sans-serif; font-size: 1rem; font-weight: 600; text-transform: uppercase; letter-spacing: 3px; margin-top: 10px; }
         .layout-text-only .message-wrapper { padding: 0 60px; margin-top: 40px; flex-grow: 1; display: flex; flex-direction: column; justify-content: flex-start; z-index: 10; }
-        .layout-text-only .text-message { font-size: 1.15rem; font-weight: 500; line-height: 1.8; color: #e2e8f0; font-style: italic; }
-        .layout-text-only .bottom-logo-wrapper { display: flex; justify-content: center; align-items: flex-end; padding-bottom: 40px; height: 100px; z-index: 10; filter: drop-shadow(0px 0px 3px rgba(255,255,255,0.7)); }
+        .layout-text-only .text-message { font-size: calc(var(--msg-size) * 1.35); font-weight: 500; line-height: 1.8; color: #e2e8f0; font-style: italic; }
+        .layout-text-only .bottom-logo-wrapper { display: flex; justify-content: center; align-items: flex-end; padding-bottom: 40px; height: 110px; z-index: 10; filter: drop-shadow(0px 0px 0px rgba(255,255,255,0.7)); }
+
+        /* Golden Logo Filter for Premium/Text Only */
+        .layout-premium .dynamic-logo, .layout-text-only .dynamic-logo {
+            filter: brightness(0) saturate(100%) invert(86%) sepia(35%) saturate(1476%) hue-rotate(345deg) brightness(102%) contrast(102%);
+        }
 
         /* Form Scrollbar */
         .custom-scroll::-webkit-scrollbar { width: 6px; }
@@ -223,6 +221,113 @@
     </style>
 </head>
 <body class="text-slate-800 antialiased h-[100dvh] flex flex-col bg-slate-200 overflow-hidden">
+
+    <!-- Authentication Screen (Salesman) -->
+    <div id="auth-screen" class="fixed inset-0 bg-slate-900 z-50 flex items-center justify-center">
+        <div class="bg-white p-8 rounded-2xl shadow-2xl w-full max-w-md mx-4">
+            <div class="text-center mb-8">
+                <h2 class="text-2xl font-bold text-slate-800">Indus Partner Portal</h2>
+                <p class="text-slate-500 text-sm mt-2">Salesman Login</p>
+            </div>
+            
+            <div id="auth-error" class="hidden mb-4 bg-red-50 text-red-600 text-sm p-3 rounded-lg border border-red-200"></div>
+
+            <form id="auth-form" class="space-y-4">
+                <div>
+                    <label class="block text-xs font-semibold text-slate-600 mb-1">Email / Username</label>
+                    <input type="email" id="auth-email" required class="w-full px-4 py-3 bg-slate-50 border border-slate-300 rounded-xl outline-none focus:border-teal-500 focus:ring-1 focus:ring-teal-500 transition-all" placeholder="salesman@indus.com">
+                </div>
+                <div>
+                    <label class="block text-xs font-semibold text-slate-600 mb-1">Password</label>
+                    <input type="password" id="auth-password" required class="w-full px-4 py-3 bg-slate-50 border border-slate-300 rounded-xl outline-none focus:border-teal-500 focus:ring-1 focus:ring-teal-500 transition-all" placeholder="••••••••">
+                </div>
+                
+                <button type="submit" id="auth-submit-btn" class="w-full bg-teal-600 hover:bg-teal-700 text-white font-bold py-3 rounded-xl shadow-lg transition-all mt-4">
+                    Login securely
+                </button>
+            </form>
+
+            <div class="mt-6 text-center">
+                <button id="show-admin-login-btn" class="text-slate-400 hover:text-slate-600 text-xs font-semibold underline-offset-4 hover:underline transition-colors">
+                    Admin Portal Access
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Admin Login Screen -->
+    <div id="admin-login-screen" class="hidden fixed inset-0 bg-slate-900 z-50 flex items-center justify-center">
+        <div class="bg-white p-8 rounded-2xl shadow-2xl w-full max-w-md mx-4 border-t-8 border-indigo-600">
+            <div class="text-center mb-8">
+                <h2 class="text-2xl font-bold text-slate-800">Admin Portal</h2>
+                <p class="text-slate-500 text-sm mt-2">Login to manage salesmen accounts</p>
+            </div>
+            
+            <div id="admin-login-error" class="hidden mb-4 bg-red-50 text-red-600 text-sm p-3 rounded-lg border border-red-200"></div>
+
+            <form id="admin-login-form" class="space-y-4">
+                <div>
+                    <label class="block text-xs font-semibold text-slate-600 mb-1">Admin Email</label>
+                    <input type="email" id="admin-login-email" required class="w-full px-4 py-3 bg-slate-50 border border-slate-300 rounded-xl outline-none focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500 transition-all" placeholder="admin@indus.com">
+                </div>
+                <div>
+                    <label class="block text-xs font-semibold text-slate-600 mb-1">Admin Password</label>
+                    <input type="password" id="admin-login-password" required class="w-full px-4 py-3 bg-slate-50 border border-slate-300 rounded-xl outline-none focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500 transition-all" placeholder="••••••••">
+                </div>
+                
+                <button type="submit" id="admin-login-submit-btn" class="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-3 rounded-xl shadow-lg transition-all mt-4">
+                    Enter Admin Panel
+                </button>
+
+                <button type="button" id="admin-setup-btn" class="w-full bg-emerald-600 hover:bg-emerald-700 text-white font-bold py-3 rounded-xl shadow-lg transition-all mt-2">
+                    First-Time Setup: Create Admin Account
+                </button>
+            </form>
+            
+            <div class="mt-6 text-center">
+                <button id="back-to-salesman-login-btn" class="text-indigo-600 hover:text-indigo-800 text-sm font-semibold underline-offset-4 hover:underline">
+                    &larr; Back to Salesman Login
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Admin Dashboard Screen -->
+    <div id="admin-dashboard-screen" class="hidden fixed inset-0 bg-slate-100 z-50 flex flex-col">
+        <header class="bg-indigo-900 text-white shadow-md z-10 p-4 flex justify-between items-center">
+            <h1 class="text-xl font-bold flex items-center gap-2">
+                <span class="text-indigo-400">🛡️</span> Indus Admin Dashboard
+            </h1>
+            <button id="admin-logout-btn" class="bg-indigo-800 hover:bg-indigo-700 px-4 py-2 rounded-lg text-sm font-semibold transition-colors border border-indigo-700">Logout Admin</button>
+        </header>
+        
+        <div class="flex-1 p-8 overflow-y-auto">
+            <div class="max-w-2xl mx-auto bg-white p-8 rounded-2xl shadow-lg border border-slate-200">
+                <h2 class="text-2xl font-bold text-slate-800 mb-6 border-b border-slate-200 pb-2">Create New Salesman Account</h2>
+                <p class="text-sm text-slate-500 mb-6">Create credentials here. Salesmen will use these to log into the main portal.</p>
+                
+                <div id="admin-create-success" class="hidden mb-6 bg-green-50 text-green-700 text-sm p-4 rounded-lg border border-green-200 font-semibold flex items-center gap-2">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
+                    Salesman account created successfully!
+                </div>
+                <div id="admin-create-error" class="hidden mb-6 bg-red-50 text-red-600 text-sm p-4 rounded-lg border border-red-200"></div>
+
+                <form id="admin-create-form" class="space-y-5">
+                    <div>
+                        <label class="block text-sm font-semibold text-slate-700 mb-1">Salesman Email</label>
+                        <input type="email" id="new-salesman-email" required class="w-full px-4 py-3 bg-slate-50 border border-slate-300 rounded-xl outline-none focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500" placeholder="salesman1@indus.com">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-semibold text-slate-700 mb-1">Temporary Password</label>
+                        <input type="text" id="new-salesman-password" required minlength="6" class="w-full px-4 py-3 bg-slate-50 border border-slate-300 rounded-xl outline-none focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500" placeholder="Password (min 6 characters)">
+                    </div>
+                    <button type="submit" id="admin-create-submit-btn" class="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-3 rounded-xl shadow-lg transition-all mt-4">
+                        Create Salesman Account
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
 
     <!-- Photo Crop Modal -->
     <div id="cropper-modal" class="fixed inset-0 bg-slate-900/90 z-[100] hidden flex-col items-center justify-center p-4 backdrop-blur-sm">
@@ -243,8 +348,8 @@
         </div>
     </div>
 
-    <!-- Main Content (Assumed Authenticated for brevity in standard view) -->
-    <div id="main-app" class="flex flex-1 flex-col h-full overflow-hidden">
+    <!-- Main Content (Hidden until logged in) -->
+    <div id="main-app" class="hidden flex-1 flex-col h-full overflow-hidden">
         
         <!-- Header -->
         <header class="bg-slate-900 text-white shadow-md z-10 relative shrink-0">
@@ -252,6 +357,10 @@
                 <h1 class="text-xl font-bold tracking-wide flex items-center gap-2">
                     <span class="text-teal-400">✧</span> <span class="hidden sm:inline">Indus Poster Generator</span><span class="sm:hidden">Indus Pro</span>
                 </h1>
+                <div class="flex items-center gap-4">
+                    <span id="user-email-display" class="text-sm text-slate-300 hidden md:block"></span>
+                    <button id="logout-btn" class="text-sm bg-slate-800 hover:bg-slate-700 px-4 py-2 rounded-lg border border-slate-700 transition-colors">Logout</button>
+                </div>
             </div>
         </header>
 
@@ -319,10 +428,19 @@
                         <section class="space-y-4">
                             <h2 class="text-lg font-bold text-slate-800 border-b-2 border-teal-500 pb-1 inline-block">2. Person Details</h2>
                             
+                            <!-- Cloud Directory Select -->
+                            <div class="bg-teal-50 p-3 rounded-lg border border-teal-200">
+                                <label for="party-select" class="block text-xs font-bold text-teal-800 uppercase tracking-wider mb-1">☁️ Load from Directory</label>
+                                <select id="party-select" class="w-full px-3 py-2 text-sm border border-teal-300 rounded-md outline-none focus:border-teal-500 font-sans bg-white">
+                                    <option value="">-- Add Manually / Select Person --</option>
+                                    <!-- Options injected via Firestore -->
+                                </select>
+                            </div>
+
                             <div class="space-y-3">
                                 <div class="bg-slate-50 p-3 rounded-lg border border-slate-200 mb-4">
                                     <label class="block text-xs font-semibold text-slate-500 uppercase tracking-wider mb-2">Upload Profile Photo</label>
-                                    <input id="photo-upload" type="file" class="block w-full text-xs text-slate-500 file:mr-3 file:py-2 file:px-4 file:rounded-md file:border-0 file:font-semibold file:bg-teal-600 file:text-white hover:file:bg-teal-700 cursor-pointer" accept="image/*" />
+                                    <input id="photo-upload" type="file" class="block w-full text-xs text-slate-500 file:mr-3 file:py-2 file:px-4 file:rounded-md file:border-0 file:font-semibold file:bg-teal-600 file:text-white hover:file:bg-teal-700 cursor-pointer border border-slate-300 rounded-md bg-white p-1" accept="image/*" />
                                 </div>
 
                                 <div>
@@ -337,6 +455,12 @@
                                     <label for="wish-date" class="block text-xs font-semibold text-slate-500 uppercase tracking-wider mb-1">Date (Optional)</label>
                                     <input type="date" id="wish-date" class="w-full px-4 py-2 text-sm border border-slate-300 rounded-md outline-none focus:border-teal-500" />
                                 </div>
+
+                                <button type="button" id="save-party-btn" class="w-full py-2 bg-white border-2 border-teal-600 text-teal-700 text-sm font-bold rounded-lg hover:bg-teal-50 transition-colors flex items-center justify-center gap-2">
+                                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7H5a2 2 0 00-2 2v9a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-3m-1 4l-3 3m0 0l-3-3m3 3V4"></path></svg>
+                                    Save to Directory
+                                </button>
+                                <div id="save-msg" class="text-xs text-center font-semibold text-teal-600 hidden">Saved successfully!</div>
                             </div>
                         </section>
 
@@ -398,6 +522,26 @@
                         
                         <!-- NEW VECTOR DECORATIONS LAYER -->
                         <div class="absolute inset-0 z-0 pointer-events-none overflow-hidden">
+                            <!-- Corporate Birthday Vectors (Matching Corner Bracket & Layout) -->
+                            <div class="show-on-birthday absolute inset-0 z-0 pointer-events-none overflow-hidden">
+                                <!-- Top Left Corner Bracket -->
+                                <div class="absolute top-4 left-4 w-12 h-12 border-t-4 border-l-4 border-white opacity-90"></div>
+                                <!-- Top Right Corner Bracket -->
+                                <div class="absolute top-4 right-4 w-12 h-12 border-t-4 border-r-4 border-white opacity-90"></div>
+                            </div>
+                            
+                            <!-- Premium Gold Vectors -->
+                            <div class="show-on-premium-vector absolute inset-0 z-0 pointer-events-none overflow-hidden">
+                                <!-- Top Left Corner Bracket -->
+                                <div class="absolute top-5 left-5 w-16 h-16 border-t-2 border-l-2 border-[#fbbf24] opacity-70"></div>
+                                <!-- Top Right Corner Bracket -->
+                                <div class="absolute top-5 right-5 w-16 h-16 border-t-2 border-r-2 border-[#fbbf24] opacity-70"></div>
+                                <!-- Bottom Left Corner Bracket -->
+                                <div class="absolute bottom-5 left-5 w-16 h-16 border-b-2 border-l-2 border-[#fbbf24] opacity-70"></div>
+                                <!-- Bottom Right Corner Bracket -->
+                                <div class="absolute bottom-5 right-5 w-16 h-16 border-b-2 border-r-2 border-[#fbbf24] opacity-70"></div>
+                            </div>
+
                             <!-- Text Only Golden Vectors -->
                             <svg class="show-on-text-only absolute inset-0 w-full h-full opacity-90" viewBox="0 0 500 650" fill="none" stroke="#fbbf24" stroke-width="2">
                                 <rect x="20" y="20" width="460" height="610" rx="15" />
@@ -445,7 +589,7 @@
 
                         <!-- Top Logo (Only visible on Anniversary/Elegant themes) -->
                         <div class="top-logo-wrapper">
-                            <img src="logo.png" alt="Indus Logo" class="h-10 object-contain" onerror="this.src='https://placehold.co/200x50/transparent/0f172a?text=INDUS+FOOTWEAR'">
+                            <img src="logo.png" alt="Indus Logo" class="h-14 object-contain dynamic-logo" onerror="this.src='https://placehold.co/200x50/transparent/0f172a?text=INDUS+FOOTWEAR'">
                         </div>
 
                         <!-- Header Area -->
@@ -488,9 +632,12 @@
                             </div>
                         </div>
 
+                        <!-- Horizontal Divider line for Corporate Birthday logo -->
+                        <div class="show-on-birthday w-5/6 h-[1px] bg-teal-600/40 mx-auto mt-auto mb-2 relative z-20"></div>
+
                         <!-- Bottom Logo Area (Standard) -->
                         <div class="bottom-logo-wrapper">
-                            <img src="logo.png" alt="Indus Logo" class="h-10 object-contain" onerror="this.src='https://placehold.co/200x50/transparent/0f172a?text=INDUS+FOOTWEAR'">
+                            <img src="logo.png" alt="Indus Logo" class="h-14 object-contain dynamic-logo" onerror="this.src='https://placehold.co/200x50/transparent/0f172a?text=INDUS+FOOTWEAR'">
                         </div>
 
                     </div>
@@ -499,10 +646,240 @@
         </main>
     </div>
 
-    <script>
-        // ==========================================
-        // UI & APP LOGIC
-        // ==========================================
+    <!-- FIREBASE AND APP LOGIC -->
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
+        import { getAuth, signInWithEmailAndPassword, createUserWithEmailAndPassword, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
+        import { getFirestore, collection, addDoc, onSnapshot } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
+
+        const firebaseConfig = {
+            apiKey: "AIzaSyAWr8tSoGfTZ8oGDF0LCBYkeGyZ6EwDrZU",
+            authDomain: "indus-footwear-greeting-app.firebaseapp.com",
+            projectId: "indus-footwear-greeting-app",
+            storageBucket: "indus-footwear-greeting-app.firebasestorage.app",
+            messagingSenderId: "3654408313",
+            appId: "1:3654408313:web:cbe827dfe8f5f2b9f81ca8"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth(app);
+        const db = getFirestore(app);
+
+        // UI Auth Elements
+        const authScreen = document.getElementById('auth-screen');
+        const mainApp = document.getElementById('main-app');
+        const authForm = document.getElementById('auth-form');
+        const authEmail = document.getElementById('auth-email');
+        const authPassword = document.getElementById('auth-password');
+        const authSubmitBtn = document.getElementById('auth-submit-btn');
+        const authError = document.getElementById('auth-error');
+        const userEmailDisplay = document.getElementById('user-email-display');
+        const logoutBtn = document.getElementById('logout-btn');
+        const partySelect = document.getElementById('party-select');
+
+        // Admin UI Elements
+        const showAdminLoginBtn = document.getElementById('show-admin-login-btn');
+        const adminLoginScreen = document.getElementById('admin-login-screen');
+        const backToSalesmanBtn = document.getElementById('back-to-salesman-login-btn');
+        const adminLoginForm = document.getElementById('admin-login-form');
+        const adminLoginEmail = document.getElementById('admin-login-email');
+        const adminLoginPassword = document.getElementById('admin-login-password');
+        const adminLoginError = document.getElementById('admin-login-error');
+        const adminLoginSubmitBtn = document.getElementById('admin-login-submit-btn');
+        const adminSetupBtn = document.getElementById('admin-setup-btn');
+        const adminDashboardScreen = document.getElementById('admin-dashboard-screen');
+        const adminLogoutBtn = document.getElementById('admin-logout-btn');
+        const adminCreateForm = document.getElementById('admin-create-form');
+        const newSalesmanEmail = document.getElementById('new-salesman-email');
+        const newSalesmanPassword = document.getElementById('new-salesman-password');
+        const adminCreateSuccess = document.getElementById('admin-create-success');
+        const adminCreateError = document.getElementById('admin-create-error');
+        const adminCreateSubmitBtn = document.getElementById('admin-create-submit-btn');
+
+        let unsubscribeParties = null;
+        let partiesData = [];
+        let isAdminMode = false;
+        let storedAdminEmail = '';
+        let storedAdminPass = '';
+        const ADMIN_EMAIL = 'admin@indus.com';
+
+        // Auth state observer
+        onAuthStateChanged(auth, (user) => {
+            if (user) {
+                if (isAdminMode) {
+                    authScreen.classList.add('hidden');
+                    adminLoginScreen.classList.add('hidden');
+                    mainApp.classList.add('hidden');
+                    mainApp.classList.remove('flex');
+                    adminDashboardScreen.classList.remove('hidden');
+                    adminDashboardScreen.classList.add('flex');
+                } else {
+                    authScreen.classList.add('hidden');
+                    adminLoginScreen.classList.add('hidden');
+                    adminDashboardScreen.classList.add('hidden');
+                    adminDashboardScreen.classList.remove('flex');
+                    mainApp.classList.remove('hidden');
+                    mainApp.classList.add('flex');
+                    userEmailDisplay.textContent = user.email || 'Salesman';
+                    loadDirectory(user);
+                }
+            } else {
+                if (!isAdminMode) authScreen.classList.remove('hidden');
+                adminLoginScreen.classList.add('hidden');
+                adminDashboardScreen.classList.add('hidden');
+                adminDashboardScreen.classList.remove('flex');
+                mainApp.classList.add('hidden');
+                mainApp.classList.remove('flex');
+                if (unsubscribeParties) unsubscribeParties();
+            }
+        });
+
+        // Navigation toggles
+        showAdminLoginBtn.addEventListener('click', () => {
+            authScreen.classList.add('hidden');
+            adminLoginScreen.classList.remove('hidden');
+            adminLoginScreen.classList.add('flex');
+        });
+
+        backToSalesmanBtn.addEventListener('click', () => {
+            adminLoginScreen.classList.add('hidden');
+            adminLoginScreen.classList.remove('flex');
+            authScreen.classList.remove('hidden');
+        });
+
+        function getFriendlyErrorMessage(error) {
+            if (error.code === 'auth/operation-not-allowed') return "Setup Required: Email/Password login is not enabled in your Firebase project.";
+            if (error.code === 'auth/invalid-credential' || error.code === 'auth/wrong-password' || error.code === 'auth/user-not-found') return "Incorrect email or password.";
+            return error.message.replace('Firebase:', '').trim();
+        }
+
+        // Handle Logins & Logout
+        authForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            authError.classList.add('hidden');
+            if (authEmail.value.toLowerCase() === ADMIN_EMAIL) {
+                authError.textContent = "Access Denied: Please use the Admin Portal below.";
+                authError.classList.remove('hidden'); return;
+            }
+            authSubmitBtn.disabled = true; authSubmitBtn.textContent = 'Processing...'; isAdminMode = false;
+            try {
+                await signInWithEmailAndPassword(auth, authEmail.value, authPassword.value);
+                authForm.reset();
+            } catch (error) {
+                authError.textContent = getFriendlyErrorMessage(error);
+                authError.classList.remove('hidden');
+            } finally {
+                authSubmitBtn.disabled = false; authSubmitBtn.textContent = 'Login securely';
+            }
+        });
+
+        adminLoginForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            adminLoginError.classList.add('hidden');
+            if (adminLoginEmail.value.toLowerCase() !== ADMIN_EMAIL) {
+                adminLoginError.textContent = "Unauthorized: You do not have Admin privileges.";
+                adminLoginError.classList.remove('hidden'); return;
+            }
+            adminLoginSubmitBtn.disabled = true; adminLoginSubmitBtn.textContent = 'Authenticating...';
+            try {
+                storedAdminEmail = adminLoginEmail.value; storedAdminPass = adminLoginPassword.value; isAdminMode = true; 
+                await signInWithEmailAndPassword(auth, storedAdminEmail, storedAdminPass);
+                adminLoginForm.reset();
+            } catch (error) {
+                adminLoginError.textContent = getFriendlyErrorMessage(error);
+                adminLoginError.classList.remove('hidden'); isAdminMode = false;
+            } finally {
+                adminLoginSubmitBtn.disabled = false; adminLoginSubmitBtn.textContent = 'Enter Admin Panel';
+            }
+        });
+
+        adminSetupBtn.addEventListener('click', async () => {
+            adminLoginError.classList.add('hidden');
+            if (adminLoginEmail.value.toLowerCase() !== ADMIN_EMAIL) {
+                adminLoginError.textContent = `Setup Error: Email must be exactly ${ADMIN_EMAIL}`;
+                adminLoginError.classList.remove('hidden'); return;
+            }
+            if (adminLoginPassword.value.length < 6) {
+                adminLoginError.textContent = "Setup Error: Password must be at least 6 characters.";
+                adminLoginError.classList.remove('hidden'); return;
+            }
+            adminSetupBtn.disabled = true; adminSetupBtn.textContent = 'Creating Admin...';
+            try {
+                await createUserWithEmailAndPassword(auth, adminLoginEmail.value, adminLoginPassword.value);
+                storedAdminEmail = adminLoginEmail.value; storedAdminPass = adminLoginPassword.value; isAdminMode = true;
+                adminLoginForm.reset();
+            } catch (error) {
+                if (error.code === 'auth/email-already-in-use') adminLoginError.textContent = "Admin account already exists! Please use 'Enter Admin Panel'.";
+                else adminLoginError.textContent = getFriendlyErrorMessage(error);
+                adminLoginError.classList.remove('hidden'); isAdminMode = false;
+            } finally {
+                adminSetupBtn.disabled = false; adminSetupBtn.textContent = 'First-Time Setup: Create Admin Account';
+            }
+        });
+
+        adminLogoutBtn.addEventListener('click', async () => { isAdminMode = false; storedAdminEmail = ''; storedAdminPass = ''; await signOut(auth); });
+        logoutBtn.addEventListener('click', async () => { isAdminMode = false; await signOut(auth); });
+
+        // Admin Creation Flow
+        adminCreateForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            adminCreateError.classList.add('hidden'); adminCreateSuccess.classList.add('hidden');
+            adminCreateSubmitBtn.disabled = true; adminCreateSubmitBtn.textContent = 'Creating...';
+            const newEmail = newSalesmanEmail.value; const newPass = newSalesmanPassword.value;
+            try {
+                await createUserWithEmailAndPassword(auth, newEmail, newPass);
+                await signOut(auth);
+                await signInWithEmailAndPassword(auth, storedAdminEmail, storedAdminPass);
+                adminCreateForm.reset();
+                adminCreateSuccess.classList.remove('hidden');
+                setTimeout(() => adminCreateSuccess.classList.add('hidden'), 5000);
+            } catch (error) {
+                adminCreateError.textContent = error.message.replace('Firebase:', '').trim();
+                adminCreateError.classList.remove('hidden');
+            } finally {
+                adminCreateSubmitBtn.disabled = false; adminCreateSubmitBtn.textContent = 'Create Salesman Account';
+            }
+        });
+
+        // Firestore Logic
+        function loadDirectory(user) {
+            const partiesRef = collection(db, 'parties');
+            unsubscribeParties = onSnapshot(partiesRef, (snapshot) => {
+                partiesData = [];
+                partySelect.innerHTML = '<option value="">-- Add Manually / Select Person --</option>';
+                snapshot.forEach(doc => { partiesData.push({ id: doc.id, ...doc.data() }); });
+                partiesData.sort((a, b) => (a.name || '').localeCompare(b.name || ''));
+                partiesData.forEach(party => {
+                    const option = document.createElement('option');
+                    option.value = party.id; option.textContent = `${party.name} - ${party.firm}`;
+                    partySelect.appendChild(option);
+                });
+            }, (error) => console.error("Error loading directory:", error));
+        }
+
+        document.getElementById('save-party-btn').addEventListener('click', async () => {
+            if (!auth.currentUser) return;
+            const name = document.getElementById('name').value.trim();
+            const firm = document.getElementById('firm').value.trim();
+            const date = document.getElementById('wish-date').value;
+            const btn = document.getElementById('save-party-btn');
+            const msg = document.getElementById('save-msg');
+
+            if (!name) return;
+            btn.disabled = true; btn.innerHTML = 'Saving...';
+            try {
+                const partiesRef = collection(db, 'parties');
+                await addDoc(partiesRef, { name, firm, dob: date || null, addedBy: auth.currentUser.email });
+                msg.classList.remove('hidden'); setTimeout(() => msg.classList.add('hidden'), 3000);
+            } catch (err) {
+                console.error("Save error:", err);
+            } finally {
+                btn.disabled = false;
+                btn.innerHTML = `<svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7H5a2 2 0 00-2 2v9a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-3m-1 4l-3 3m0 0l-3-3m3 3V4"></path></svg> Save to Directory`;
+            }
+        });
+
+        // UI & App Logic
         document.addEventListener('DOMContentLoaded', () => {
             const messages = {
                 'layout-birthday': "May your day be as bright, strong, and inspiring as the role you play in our journey. Your dedication and partnership mean a lot to us at Indus Footwear.",
@@ -548,12 +925,29 @@
             // Init Default texts
             formInputs.message.value = messages['layout-birthday'];
 
+            // Handle Directory Selection Mapping
+            partySelect.addEventListener('change', (e) => {
+                const selectedId = e.target.value;
+                if (!selectedId) return;
+                const party = partiesData.find(p => p.id === selectedId);
+                if (party) {
+                    formInputs.name.value = party.name || '';
+                    formInputs.firm.value = party.firm || '';
+                    if (party.dob) {
+                        formInputs.date.value = party.dob;
+                        const dateObj = new Date(party.dob);
+                        previewElements.date.textContent = dateObj.toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' });
+                    }
+                    previewElements.name.textContent = party.name || 'Mr. Atul Ji';
+                    previewElements.firm.textContent = party.firm || 'Indus Footwear, Bharatpur';
+                }
+            });
+
             // Theme Mapping -> Triggers Complete Layout Overhaul
             formInputs.theme.forEach(radio => {
                 radio.addEventListener('change', (e) => {
                     const theme = e.target.value;
                     
-                    // 1. Update text content
                     previewElements.occasion.textContent = headings[theme];
                     
                     if (theme === 'layout-baby-boy') {
@@ -565,7 +959,7 @@
                     formInputs.message.value = messages[theme];
                     previewElements.message.textContent = formInputs.message.value;
 
-                    // 2. Update Master CSS Class
+                    // Update Master CSS Class
                     previewElements.card.className = "card-container transition-all duration-500"; 
                     previewElements.card.classList.add(theme);
                 });
@@ -589,12 +983,10 @@
 
             formInputs.alignBtns.forEach(btn => {
                 btn.addEventListener('click', (e) => {
-                    // Reset active states
                     formInputs.alignBtns.forEach(b => {
                         b.classList.remove('border-teal-500', 'bg-teal-50', 'text-teal-700');
                         b.classList.add('border-slate-300', 'bg-white', 'text-slate-600');
                     });
-                    // Set active state
                     e.target.classList.remove('border-slate-300', 'bg-white', 'text-slate-600');
                     e.target.classList.add('border-teal-500', 'bg-teal-50', 'text-teal-700');
                     
@@ -603,10 +995,11 @@
             });
 
             // Live Text Updates
-            formInputs.name.addEventListener('input', (e) => { previewElements.name.textContent = e.target.value.trim() || 'Mr. Atul Ji'; });
-            formInputs.firm.addEventListener('input', (e) => { previewElements.firm.textContent = e.target.value.trim() || 'Indus Footwear, Bharatpur'; });
+            formInputs.name.addEventListener('input', (e) => { previewElements.name.textContent = e.target.value.trim() || 'Mr. Atul Ji'; partySelect.value = ""; });
+            formInputs.firm.addEventListener('input', (e) => { previewElements.firm.textContent = e.target.value.trim() || 'Indus Footwear, Bharatpur'; partySelect.value = ""; });
             formInputs.message.addEventListener('input', (e) => { previewElements.message.textContent = e.target.value.trim(); });
             formInputs.date.addEventListener('input', (e) => {
+                partySelect.value = "";
                 if(e.target.value) {
                     previewElements.date.textContent = new Date(e.target.value).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' });
                 } else {
@@ -614,7 +1007,7 @@
                 }
             });
 
-            // Cropper Logic (Ultra High-Res Lossless Fix)
+            // Cropper Logic
             let cropper = null;
             const cropperModal = document.getElementById('cropper-modal');
             const cropperImage = document.getElementById('cropper-image');
@@ -642,7 +1035,6 @@
                         cropperModal.classList.add('flex');
                         
                         if (cropper) cropper.destroy();
-                        // Initialize cropper demanding a square aspect ratio
                         cropper = new Cropper(cropperImage, {
                             aspectRatio: 1, 
                             viewMode: 1,
@@ -664,7 +1056,6 @@
             applyCropBtn.addEventListener('click', () => {
                 if(!cropper) return;
                 
-                // HIGH RESOLUTION CROP EXPORT (Use native resolution up to 1200px to prevent blur on small crops)
                 const canvas = cropper.getCroppedCanvas({
                     maxWidth: 1200,
                     maxHeight: 1200,
@@ -673,12 +1064,11 @@
                     imageSmoothingQuality: 'high',
                 });
                 
-                // Using PNG ensures lossless transfer. Using native <img> tag fixes html2canvas background-image blur
                 previewElements.photo.src = canvas.toDataURL('image/png', 1.0);
                 closeCropper();
             });
 
-            // Download Logic (Ultra HD html2canvas)
+            // Download Logic 
             const downloadBtn = document.getElementById('download-btn');
             const downloadText = document.getElementById('download-text');
             
@@ -704,12 +1094,11 @@
                 downloadText.innerHTML = `Processing High-Res Image...`;
                 downloadBtn.disabled = true;
 
-                // Fix html2canvas scroll viewport bug
                 window.scrollTo(0, 0);
 
                 setTimeout(() => {
                     html2canvas(previewElements.card, {
-                        scale: 3, // 3x SCALE FOR MAXIMUM CLARITY (1500x1950px final export)
+                        scale: 3,
                         useCORS: true, 
                         allowTaint: true,
                         backgroundColor: getComputedStyle(previewElements.card).backgroundColor,
@@ -720,7 +1109,7 @@
                         onclone: (documentClone) => {
                             const card = documentClone.getElementById('card-preview');
                             if (card) {
-                                card.style.transform = 'none'; // Absolutely prevent scaling down during clone
+                                card.style.transform = 'none';
                                 card.style.width = '500px';
                                 card.style.height = '650px';
                             }
@@ -731,7 +1120,7 @@
                         const link = document.createElement('a');
                         const userName = nameVal.replace(/\s+/g, '_') || 'Partner';
                         const theme = document.querySelector('input[name="theme"]:checked').value;
-                        const suffix = theme.split('-').pop(); // e.g. birthday, premium, anniversary
+                        const suffix = theme.split('-').pop();
                         
                         link.download = `Indus_${suffix}_${userName}.png`;
                         link.href = imgData;
