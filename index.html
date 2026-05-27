@@ -445,11 +445,11 @@
 
                                 <div>
                                     <label for="name" class="block text-xs font-semibold text-slate-500 uppercase tracking-wider mb-1">Name <span class="text-red-500">*</span></label>
-                                    <input type="text" id="name" placeholder="Mr. Atul Ji" class="w-full px-4 py-2 text-sm border border-slate-300 rounded-md outline-none focus:border-teal-500" required />
+                                    <input type="text" id="name" placeholder="Mr. Party Name Ji" class="w-full px-4 py-2 text-sm border border-slate-300 rounded-md outline-none focus:border-teal-500" required />
                                 </div>
                                 <div>
                                     <label for="firm" class="block text-xs font-semibold text-slate-500 uppercase tracking-wider mb-1">Firm & Location / Subtitle <span class="text-red-500">*</span></label>
-                                    <input type="text" id="firm" placeholder="Indus Footwear, Bharatpur" class="w-full px-4 py-2 text-sm border border-slate-300 rounded-md outline-none focus:border-teal-500" required />
+                                    <input type="text" id="firm" placeholder="Firm Name" class="w-full px-4 py-2 text-sm border border-slate-300 rounded-md outline-none focus:border-teal-500" required />
                                 </div>
                                 <div>
                                     <label for="wish-date" class="block text-xs font-semibold text-slate-500 uppercase tracking-wider mb-1">Date (Optional)</label>
@@ -609,8 +609,8 @@
                         <!-- Details Area -->
                         <div class="name-wrapper flex flex-col items-center">
                             <span class="show-on-elegant text-sm font-serif italic text-slate-600 mb-1">Warm Wishes to</span>
-                            <div id="preview-name" class="name-banner">Mr. Atul Ji</div>
-                            <p id="preview-firm" class="text-firm">Indus Footwear, Bharatpur</p>
+                            <div id="preview-name" class="name-banner">Mr. Party Name Ji</div>
+                            <p id="preview-firm" class="text-firm">Firm Name, Location</p>
                             <p id="preview-date" class="text-date"></p>
                             
                             <!-- Premium Theme Dividers -->
@@ -938,8 +938,8 @@
                         const dateObj = new Date(party.dob);
                         previewElements.date.textContent = dateObj.toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' });
                     }
-                    previewElements.name.textContent = party.name || 'Mr. Atul Ji';
-                    previewElements.firm.textContent = party.firm || 'Indus Footwear, Bharatpur';
+                    previewElements.name.textContent = party.name || 'Mr. Party Name Ji';
+                    previewElements.firm.textContent = party.firm || 'Firm Name, Location';
                 }
             });
 
@@ -995,8 +995,8 @@
             });
 
             // Live Text Updates
-            formInputs.name.addEventListener('input', (e) => { previewElements.name.textContent = e.target.value.trim() || 'Mr. Atul Ji'; partySelect.value = ""; });
-            formInputs.firm.addEventListener('input', (e) => { previewElements.firm.textContent = e.target.value.trim() || 'Indus Footwear, Bharatpur'; partySelect.value = ""; });
+            formInputs.name.addEventListener('input', (e) => { previewElements.name.textContent = e.target.value.trim() || 'Mr. Party Name Ji'; partySelect.value = ""; });
+            formInputs.firm.addEventListener('input', (e) => { previewElements.firm.textContent = e.target.value.trim() || 'Firm Name, Location'; partySelect.value = ""; });
             formInputs.message.addEventListener('input', (e) => { previewElements.message.textContent = e.target.value.trim(); });
             formInputs.date.addEventListener('input', (e) => {
                 partySelect.value = "";
