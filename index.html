@@ -18,15 +18,10 @@
     <!-- Load Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&family=Great+Vibes&family=Lora:ital,wght@0,400;0,600;1,400&family=Montserrat:wght@400;500;600;700;800;900&family=Playfair+Display:ital,wght@0,600;0,700;1,600&family=Pacifico&family=Quicksand:wght@500;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700&family=Great+Vibes&family=Lora:ital,wght@0,400;0,600;1,400&family=Montserrat:wght@400;600;700;800;900&family=Playfair+Display:ital,wght@0,600;0,700;1,600&family=Pacifico&family=Quicksand:wght@500;700&display=swap" rel="stylesheet">
     
     <style>
-        :root {
-            --custom-font: 'Montserrat', sans-serif;
-            --msg-size: 0.85rem;
-            --msg-align: center;
-        }
-
+        /* Base Defaults */
         body {
             background-color: #f8fafc;
             font-family: 'Montserrat', sans-serif;
@@ -34,93 +29,129 @@
             -webkit-font-smoothing: antialiased;
         }
 
-        /* --- BASE CARD CONTAINER --- */
+        /* -------------------------------------
+           TEMPLATE THEMES (Colors & Fonts)
+           ------------------------------------- */
+        .theme-classic-teal {
+            --color-bg: #eef2f5; --color-primary: #50b4a6; --color-ribbon: #008080;
+            --color-heading: #facc15; --color-name: #ffffff; --color-firm: #008080;
+            --color-date: #64748b; --color-message: #1e293b; --color-logo: #0f172a;
+            --theme-heading-font: 'Lora', serif;
+        }
+        .theme-royal-gold {
+            --color-bg: #0f172a; --color-primary: #1e293b; --color-ribbon: #eab308;
+            --color-heading: #fbbf24; --color-name: #ffffff; --color-firm: #fbbf24;
+            --color-date: #94a3b8; --color-message: #f8fafc; --color-logo: #fbbf24;
+            --theme-heading-font: 'Cinzel', serif;
+        }
+        .theme-festive-ruby {
+            --color-bg: #fff1f2; --color-primary: #e11d48; --color-ribbon: #be123c;
+            --color-heading: #ffffff; --color-name: #ffffff; --color-firm: #e11d48;
+            --color-date: #9f1239; --color-message: #4c0519; --color-logo: #be123c;
+            --theme-heading-font: 'Pacifico', cursive;
+        }
+        .theme-polaroid-light {
+            --color-bg: #ffffff; --color-primary: #ffffff; --color-ribbon: #0f172a;
+            --color-heading: #0f172a; --color-name: #0f172a; --color-firm: #334155;
+            --color-date: #64748b; --color-message: #1e293b; --color-logo: #000000;
+            --theme-heading-font: 'Montserrat', sans-serif;
+        }
+        .theme-baby-boy {
+            --color-bg: #f0f9ff; --color-primary: #38bdf8; --color-ribbon: #0284c7;
+            --color-heading: #ffffff; --color-name: #ffffff; --color-firm: #0369a1;
+            --color-date: #0c4a6e; --color-message: #082f49; --color-logo: #0284c7;
+            --theme-heading-font: 'Great Vibes', cursive;
+        }
+        .theme-baby-girl {
+            --color-bg: #fdf2f8; --color-primary: #f472b6; --color-ribbon: #db2777;
+            --color-heading: #ffffff; --color-name: #ffffff; --color-firm: #9d174d;
+            --color-date: #831843; --color-message: #4a044e; --color-logo: #db2777;
+            --theme-heading-font: 'Great Vibes', cursive;
+        }
+        .theme-text-only {
+            --color-bg: #020617; --color-primary: #1e3a8a; --color-ribbon: #fbbf24;
+            --color-heading: #fbbf24; --color-name: #fde047; --color-firm: #94a3b8;
+            --color-date: #cbd5e1; --color-message: #e2e8f0; --color-logo: #fbbf24;
+            --theme-heading-font: 'Cinzel', serif;
+        }
+
+        :root {
+            --custom-font: 'Montserrat', sans-serif;
+            --msg-size: 0.85rem;
+            --msg-align: center;
+        }
+
+        /* Base Card Container */
         .card-container {
             width: 500px;
             height: 650px;
             position: relative;
+            background-color: var(--color-bg);
             margin: 0 auto;
             overflow: hidden;
             box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
             flex-shrink: 0;
             display: flex;
             flex-direction: column;
-            background-color: white;
+            transition: background-color 0.3s ease;
         }
 
-        /* --- SHARED ELEMENTS --- */
-        .dynamic-text { 
-            font-family: var(--custom-font); 
-            font-size: var(--msg-size); 
-            text-align: var(--msg-align); 
-        }
+        /* Shared Card Elements */
+        .dynamic-text { font-family: var(--custom-font); font-size: var(--msg-size); text-align: var(--msg-align); }
         .inner-photo { width: 100%; height: 100%; object-fit: cover; object-position: center; display: block; }
         
-        /* Helper to hide elements based on layout */
-        .show-on-elegant, .show-on-premium, .show-on-premium-vector, .show-on-baby, .show-on-baby-boy, .show-on-baby-girl, .show-on-text-only, .show-on-birthday { display: none; }
-
-        /* Default state for top logo - Hidden to prevent appearing on birthday/premium */
+        .show-on-elegant, .show-on-premium, .show-on-premium-vector, .show-on-baby, .show-on-baby-boy, .show-on-baby-girl, .show-on-text-only, .show-on-classic { display: none; }
         .top-logo-wrapper { display: none; }
 
         /* =========================================
-           LAYOUT 1: CORPORATE RIBBON (Birthday Default)
+           LAYOUT 1: CORPORATE RIBBON (Canva Colors)
            ========================================= */
-        .layout-birthday { background: linear-gradient(to bottom, #4bb5a8 32%, #eaeff4 32%); color: #1e293b; }
-        .layout-birthday .show-on-birthday { display: block; }
+        .layout-classic { background: linear-gradient(to bottom, var(--color-primary) 32%, var(--color-bg) 32%); }
+        .layout-classic .show-on-classic { display: block; }
         
-        /* Birthday Pattern Overlay for the bottom section */
-        .layout-birthday::before {
-            content: ""; position: absolute; left: 0; right: 0; bottom: 0; top: 32%;
-            background-image: url("data:image/svg+xml,%3Csvg width='200' height='200' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' stroke='%230f766e' stroke-width='1.5' opacity='0.12'%3E%3C!-- Balloon --%3E%3Cpath d='M40 50 C 30 30, 70 30, 60 50 C 55 60, 45 60, 40 50 Z'/%3E%3Cpath d='M50 56 L50 80 M45 65 Q 55 70 45 75'/%3E%3C!-- Gift --%3E%3Crect x='130' y='120' width='40' height='40' rx='2'/%3E%3Cpath d='M130 140 H170 M150 120 V160'/%3E%3Cpath d='M150 120 C 140 110, 135 125, 150 120 C 160 110, 165 125, 150 120'/%3E%3C!-- Star --%3E%3Cpath d='M160 40 L163 48 L172 48 L165 53 L167 61 L160 56 L153 61 L155 53 L148 48 L157 48 Z'/%3E%3C!-- Confetti --%3E%3Cpath d='M20 150 L30 160 M90 20 L100 30 M80 160 A 10 10 0 0 1 100 170'/%3E%3C!-- Party Hat --%3E%3Cpath d='M90 100 L110 100 L100 70 Z'/%3E%3Ccircle cx='100' cy='67' r='3'/%3E%3C/g%3E%3C/svg%3E");
-            background-size: 250px;
-            pointer-events: none;
-            z-index: 0;
-        }
+        .layout-classic .card-header { height: 32%; display: flex; align-items: center; justify-content: center; position: relative; z-index: 20; }
+        .layout-classic .card-header::before { content: ""; position: absolute; top: 15px; left: 15px; width: 40px; height: 40px; border-top: 6px solid white; border-left: 6px solid white; }
+        .layout-classic .card-header::after { content: ""; position: absolute; top: 15px; right: 15px; width: 40px; height: 40px; border-top: 6px solid white; border-right: 6px solid white; }
 
-        .layout-birthday .card-header { height: 32%; display: flex; align-items: center; justify-content: center; position: relative; z-index: 20; }
-        .layout-birthday .text-heading { color: #fde047; font-family: 'Cinzel', serif; font-size: 2.5rem; letter-spacing: 0.1em; text-shadow: 1px 1px 2px rgba(0,0,0,0.4); margin-top: -20px; z-index: 20;}
+        .layout-classic .text-heading { color: #fde047; font-family: 'Cinzel', serif; font-size: 2.5rem; letter-spacing: 0.1em; text-shadow: 1px 1px 2px rgba(0,0,0,0.4); margin-top: -20px; z-index: 20;}
         
-        .layout-birthday .photo-wrapper { margin-top: -65px; z-index: 20; display: flex; justify-content: center; position: relative;}
-        .layout-birthday .photo-mask { border-radius: 50%; width: 150px; height: 150px; border: 4px solid white; box-shadow: 0 4px 10px rgba(0,0,0,0.1); background-color: #cbd5e1; overflow: hidden;}
+        .layout-classic .photo-wrapper { margin-top: -65px; z-index: 20; display: flex; justify-content: center; position: relative;}
+        .layout-classic .photo-mask { border-radius: 50%; width: 150px; height: 150px; border: 4px solid white; box-shadow: 0 4px 10px rgba(0,0,0,0.1); background-color: #cbd5e1; overflow: hidden;}
         
-        .layout-birthday .name-wrapper { text-align: center; margin-top: 15px; z-index: 20; position: relative;}
-        .layout-birthday .name-banner { 
-            background-color: #00897b; color: white; padding: 10px 40px; font-weight: 800; font-size: 1.3rem; 
+        .layout-classic .name-wrapper { text-align: center; margin-top: 15px; z-index: 20; position: relative;}
+        .layout-classic .name-banner { 
+            background-color: var(--color-ribbon); color: white; padding: 10px 40px; font-weight: 800; font-size: 1.3rem; 
             display: inline-block; position: relative;
             clip-path: polygon(15px 0, calc(100% - 15px) 0, 100% 50%, calc(100% - 15px) 100%, 15px 100%, 0 50%);
         }
         
-        .layout-birthday .text-firm { text-align: center; color: #00897b; font-family: 'Lora', serif; font-size: 1.2rem; font-weight: 600; margin-top: 10px; }
-        .layout-birthday .text-date { text-align: center; color: #64748b; font-size: 0.8rem; font-weight: 600; margin-top: 2px; }
-        .layout-birthday .message-wrapper { padding: 0 40px; margin-top: 15px; flex-grow: 1; display: flex; flex-direction: column; justify-content: flex-start; z-index: 20; position: relative;}
-        .layout-birthday .text-message { font-weight: 600; line-height: 1.5; color: #1e293b; }
-        .layout-birthday .bottom-logo-wrapper { display: flex; justify-content: center; align-items: flex-end; padding-bottom: 25px; height: 95px; z-index: 20; position: relative;}
+        .layout-classic .text-firm { text-align: center; color: var(--color-firm); font-family: 'Lora', serif; font-size: 1.2rem; font-weight: 600; margin-top: 10px; }
+        .layout-classic .text-date { text-align: center; color: var(--color-date); font-size: 0.8rem; font-weight: 600; margin-top: 2px; }
+        .layout-classic .message-wrapper { padding: 0 40px; margin-top: 15px; flex-grow: 1; display: flex; flex-direction: column; justify-content: flex-start; z-index: 20; position: relative;}
+        .layout-classic .text-message { font-weight: 600; line-height: 1.5; color: var(--color-message); }
+        .layout-classic .bottom-logo-wrapper { display: flex; justify-content: center; align-items: flex-end; padding-bottom: 25px; height: 95px; z-index: 20; position: relative;}
 
         /* =========================================
            LAYOUT 2: ELEGANT WAVES (Anniversary)
            ========================================= */
         .layout-anniversary { background: linear-gradient(135deg, #f0fdf4 0%, #e0f2fe 50%, #fef3c7 100%); color: #0f172a; border: 15px solid white; }
-        
-        .layout-anniversary::before {
-            content: ""; position: absolute; inset: 0; opacity: 0.1; pointer-events: none;
-            background-image: repeating-radial-gradient(circle at 0 0, transparent 0, #00897b 10px), repeating-linear-gradient(#fbbf24, #fbbf24);
-        }
+        .layout-anniversary::before { content: ""; position: absolute; inset: 0; opacity: 0.1; pointer-events: none; background-image: repeating-radial-gradient(circle at 0 0, transparent 0, #00897b 10px), repeating-linear-gradient(#fbbf24, #fbbf24); }
 
         .layout-anniversary .show-on-elegant { display: block; }
         .layout-anniversary .bottom-logo-wrapper { display: none; }
         
         .layout-anniversary .top-logo-wrapper { display: flex; justify-content: center; padding-top: 25px; z-index: 10;}
-        .layout-anniversary .card-header { text-align: center; margin-top: 15px; z-index: 10; }
+        .layout-anniversary .card-header { text-align: center; margin-top: 15px; z-index: 10; position: relative; }
         .layout-anniversary .text-heading { color: #92754c; font-family: 'Lora', serif; font-size: 1.8rem; font-weight: 600; }
         
-        .layout-anniversary .photo-wrapper { margin-top: 20px; z-index: 10; display: flex; justify-content: center; }
+        .layout-anniversary .photo-wrapper { margin-top: 20px; z-index: 10; display: flex; justify-content: center; position: relative;}
         .layout-anniversary .photo-mask { border-radius: 12px; width: 160px; height: 180px; box-shadow: 0 10px 25px rgba(0,0,0,0.15); border: 2px solid #d4af37; overflow: hidden;}
         
-        .layout-anniversary .name-wrapper { text-align: center; margin-top: 15px; z-index: 10; }
+        .layout-anniversary .name-wrapper { text-align: center; margin-top: 15px; z-index: 10; position: relative;}
         .layout-anniversary .name-banner { background: transparent; color: #1e3a5f; font-family: 'Cinzel', serif; font-size: 1.4rem; font-weight: 700; padding: 0;}
         .layout-anniversary .text-firm { text-align: center; color: #1e3a5f; font-family: 'Montserrat', sans-serif; font-size: 0.85rem; font-weight: 700; letter-spacing: 1px; text-transform: uppercase; margin-top: 4px; }
         
-        .layout-anniversary .message-wrapper { padding: 0 50px; margin-top: 20px; flex-grow: 1; z-index: 10;}
+        .layout-anniversary .message-wrapper { padding: 0 50px; margin-top: 20px; flex-grow: 1; z-index: 10; position: relative;}
         .layout-anniversary .text-message { font-weight: 500; line-height: 1.6; color: #334155; }
         .layout-anniversary .regards-block { text-align: center; margin-top: auto; padding-bottom: 25px; font-family: 'Lora', serif; font-size: 0.9rem; color: #1e3a5f; font-weight: 600;}
 
@@ -131,23 +162,23 @@
         .layout-premium::before { content: ""; position: absolute; inset: 0; background-image: radial-gradient(#fbbf24 1px, transparent 1px); background-size: 40px 40px; opacity: 0.05; }
         .layout-premium .show-on-premium-vector { display: block; }
         
-        .layout-premium .show-on-premium { display: flex; justify-content: center; align-items: center; gap: 10px; margin-top: 10px; z-index: 10;}
+        .layout-premium .show-on-premium { display: flex; justify-content: center; align-items: center; gap: 10px; margin-top: 10px; z-index: 10; position: relative;}
         .layout-premium .show-on-premium span { height: 1px; width: 40px; background-color: #fbbf24; }
         
-        .layout-premium .card-header { padding-top: 30px; text-align: center; z-index: 10;}
+        .layout-premium .card-header { padding-top: 30px; text-align: center; z-index: 10; position: relative;}
         .layout-premium .text-heading { color: #ffffff; font-family: 'Great Vibes', cursive; font-size: 4rem; font-weight: 400; line-height: 0.8; text-shadow: 0 0 10px rgba(251, 191, 36, 0.3);}
         .layout-premium .text-heading::before { content: 'HAPPY'; display: block; font-family: 'Montserrat', sans-serif; font-size: 1.2rem; font-weight: 800; letter-spacing: 0.3em; color: #fbbf24; margin-bottom: 10px; }
         
-        .layout-premium .photo-wrapper { margin-top: 20px; z-index: 10; display: flex; justify-content: center; }
+        .layout-premium .photo-wrapper { margin-top: 20px; z-index: 10; display: flex; justify-content: center; position: relative;}
         .layout-premium .photo-mask { border-radius: 50%; width: 140px; height: 140px; border: 3px solid #fbbf24; box-shadow: 0 0 20px rgba(251, 191, 36, 0.2); overflow: hidden;}
         
-        .layout-premium .name-wrapper { text-align: center; margin-top: 15px; z-index: 10; }
+        .layout-premium .name-wrapper { text-align: center; margin-top: 15px; z-index: 10; position: relative;}
         .layout-premium .name-banner { background: transparent; color: #fbbf24; font-family: 'Cinzel', serif; font-size: 1.5rem; font-weight: 700; }
         .layout-premium .text-firm { text-align: center; color: #ffffff; font-family: 'Montserrat', sans-serif; font-size: 1rem; font-weight: 600; margin-top: 5px; }
         
-        .layout-premium .message-wrapper { padding: 0 40px; margin-top: 20px; flex-grow: 1; z-index: 10;}
+        .layout-premium .message-wrapper { padding: 0 40px; margin-top: 20px; flex-grow: 1; z-index: 10; position: relative;}
         .layout-premium .text-message { font-weight: 500; line-height: 1.6; color: #e2e8f0; font-style: italic;}
-        .layout-premium .bottom-logo-wrapper { display: flex; justify-content: center; align-items: flex-end; padding-bottom: 20px; height: 85px; z-index: 10; }
+        .layout-premium .bottom-logo-wrapper { display: flex; justify-content: center; align-items: flex-end; padding-bottom: 20px; height: 85px; z-index: 10; position: relative;}
 
         /* =========================================
            LAYOUT 4: BABY BOY & GIRL
@@ -155,12 +186,12 @@
         .layout-baby-boy { background: linear-gradient(180deg, #f0f9ff 0%, #e0f2fe 100%); color: #0c4a6e; }
         .layout-baby-girl { background: linear-gradient(180deg, #fdf2f8 0%, #fce7f3 100%); color: #831843; }
         
-        .layout-baby-boy .show-on-baby, .layout-baby-girl .show-on-baby { display: block; text-align: center; z-index: 10;}
+        .layout-baby-boy .show-on-baby, .layout-baby-girl .show-on-baby { display: block; text-align: center; z-index: 10; position: relative;}
         .layout-baby-boy .show-on-baby-boy { display: block; }
         .layout-baby-girl .show-on-baby-girl { display: block; }
         .layout-baby-boy::after, .layout-baby-girl::after { content: ""; position: absolute; inset: 0; background-image: radial-gradient(white 2px, transparent 2px); background-size: 30px 30px; opacity: 0.3; pointer-events: none;}
 
-        .layout-baby-boy .card-header, .layout-baby-girl .card-header { padding-top: 40px; text-align: center; z-index: 10; }
+        .layout-baby-boy .card-header, .layout-baby-girl .card-header { padding-top: 40px; text-align: center; z-index: 10; position: relative; }
         .layout-baby-boy .text-heading, .layout-baby-girl .text-heading { font-family: 'Lora', serif; font-size: 2rem; font-weight: 600; margin-bottom: 5px;}
         .layout-baby-boy .text-heading { color: #8b5cf6; } 
         .layout-baby-girl .text-heading { color: #d946ef; }
@@ -173,15 +204,15 @@
         .layout-baby-boy .sub-heading { color: #38bdf8; }
         .layout-baby-girl .sub-heading { color: #f472b6; }
 
-        .layout-baby-boy .photo-wrapper, .layout-baby-girl .photo-wrapper { margin-top: 10px; z-index: 10; display: flex; justify-content: center; }
+        .layout-baby-boy .photo-wrapper, .layout-baby-girl .photo-wrapper { margin-top: 10px; z-index: 10; display: flex; justify-content: center; position: relative;}
         .layout-baby-boy .photo-mask, .layout-baby-girl .photo-mask { border-radius: 24px; width: 160px; height: 160px; border: 6px solid white; box-shadow: 0 10px 20px rgba(0,0,0,0.08); overflow: hidden; transform: rotate(2deg);}
         
         .layout-baby-boy .text-firm, .layout-baby-girl .text-firm { display: none; } 
         
-        .layout-baby-boy .message-wrapper, .layout-baby-girl .message-wrapper { padding: 0 45px; margin-top: 25px; flex-grow: 1; z-index: 10;}
+        .layout-baby-boy .message-wrapper, .layout-baby-girl .message-wrapper { padding: 0 45px; margin-top: 25px; flex-grow: 1; z-index: 10; position: relative;}
         .layout-baby-boy .text-message, .layout-baby-girl .text-message { font-family: 'Lora', serif; font-weight: 500; line-height: 1.6; }
         
-        .layout-baby-boy .bottom-logo-wrapper, .layout-baby-girl .bottom-logo-wrapper { display: flex; justify-content: center; align-items: flex-end; padding-bottom: 30px; height: 90px; z-index: 10;}
+        .layout-baby-boy .bottom-logo-wrapper, .layout-baby-girl .bottom-logo-wrapper { display: flex; justify-content: center; align-items: flex-end; padding-bottom: 30px; height: 90px; z-index: 10; position: relative;}
 
         /* =========================================
            LAYOUT 5: TEXT ONLY BIRTHDAY
@@ -189,13 +220,13 @@
         .layout-text-only { background: radial-gradient(circle at top, #1e3a8a 0%, #020617 100%); color: #f8fafc; border: none; outline: none; }
         .layout-text-only .show-on-text-only { display: block; }
         .layout-text-only .photo-wrapper { display: none; }
-        .layout-text-only .card-header { padding-top: 80px; text-align: center; z-index: 10; }
+        .layout-text-only .card-header { padding-top: 80px; text-align: center; z-index: 10; position: relative;}
         .layout-text-only .text-heading { color: #fbbf24; font-family: 'Cinzel', serif; font-size: 3.5rem; font-weight: 700; letter-spacing: 0.1em; line-height: 1.1; text-shadow: 0 4px 15px rgba(251,191,36,0.3); }
         .layout-text-only .text-heading::after { content: ''; display: block; width: 100px; height: 3px; background-color: #fbbf24; margin: 25px auto 0; box-shadow: 0 0 10px rgba(251,191,36,0.5); }
-        .layout-text-only .name-wrapper { text-align: center; margin-top: 50px; z-index: 10; }
+        .layout-text-only .name-wrapper { text-align: center; margin-top: 50px; z-index: 10; position: relative;}
         .layout-text-only .name-banner { background: transparent; color: #fde047; font-family: 'Great Vibes', cursive; font-size: 3rem; font-weight: 400; padding: 0; clip-path: none; text-shadow: 0 2px 10px rgba(253,224,71,0.2); }
         .layout-text-only .text-firm { text-align: center; color: #94a3b8; font-family: 'Montserrat', sans-serif; font-size: 1rem; font-weight: 600; text-transform: uppercase; letter-spacing: 3px; margin-top: 10px; }
-        .layout-text-only .message-wrapper { padding: 0 60px; margin-top: 40px; flex-grow: 1; display: flex; flex-direction: column; justify-content: flex-start; z-index: 10; }
+        .layout-text-only .message-wrapper { padding: 0 60px; margin-top: 40px; flex-grow: 1; display: flex; flex-direction: column; justify-content: flex-start; z-index: 10; position: relative;}
         .layout-text-only .text-message { font-size: calc(var(--msg-size) * 1.35); font-weight: 500; line-height: 1.8; color: #e2e8f0; font-style: italic; }
         .layout-text-only .bottom-logo-wrapper { display: flex; justify-content: center; align-items: flex-end; padding-bottom: 40px; height: 110px; z-index: 10; filter: drop-shadow(0px 0px 0px rgba(255,255,255,0.7)); }
 
@@ -221,6 +252,25 @@
     </style>
 </head>
 <body class="text-slate-800 antialiased h-[100dvh] flex flex-col bg-slate-200 overflow-hidden">
+
+    <!-- Photo Crop Modal -->
+    <div id="cropper-modal" class="fixed inset-0 bg-slate-900/90 z-[100] hidden flex-col items-center justify-center p-4 backdrop-blur-sm">
+        <div class="bg-white rounded-2xl shadow-2xl w-full max-w-lg overflow-hidden flex flex-col">
+            <div class="p-4 border-b border-slate-200 flex justify-between items-center bg-slate-50">
+                <h3 class="font-bold text-slate-800">Crop Profile Photo</h3>
+                <button id="close-crop-btn" class="text-slate-400 hover:text-red-500 transition-colors">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+                </button>
+            </div>
+            <div class="p-4 bg-slate-100 flex-1 cropper-container flex justify-center items-center">
+                <img id="cropper-image" src="" alt="To Crop" style="max-width: 100%; display: block;">
+            </div>
+            <div class="p-4 border-t border-slate-200 bg-white flex justify-end gap-3">
+                <button id="cancel-crop-btn" class="px-5 py-2 rounded-lg font-semibold text-slate-600 bg-slate-100 hover:bg-slate-200 transition-colors">Cancel</button>
+                <button id="apply-crop-btn" class="px-5 py-2 rounded-lg font-bold text-white bg-teal-600 hover:bg-teal-700 transition-colors">Apply Crop</button>
+            </div>
+        </div>
+    </div>
 
     <!-- Authentication Screen (Salesman) -->
     <div id="auth-screen" class="fixed inset-0 bg-slate-900 z-50 flex items-center justify-center">
@@ -329,25 +379,6 @@
         </div>
     </div>
 
-    <!-- Photo Crop Modal -->
-    <div id="cropper-modal" class="fixed inset-0 bg-slate-900/90 z-[100] hidden flex-col items-center justify-center p-4 backdrop-blur-sm">
-        <div class="bg-white rounded-2xl shadow-2xl w-full max-w-lg overflow-hidden flex flex-col">
-            <div class="p-4 border-b border-slate-200 flex justify-between items-center bg-slate-50">
-                <h3 class="font-bold text-slate-800">Crop Profile Photo</h3>
-                <button id="close-crop-btn" class="text-slate-400 hover:text-red-500 transition-colors">
-                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
-                </button>
-            </div>
-            <div class="p-4 bg-slate-100 flex-1 cropper-container flex justify-center items-center">
-                <img id="cropper-image" src="" alt="To Crop" style="max-width: 100%; display: block;">
-            </div>
-            <div class="p-4 border-t border-slate-200 bg-white flex justify-end gap-3">
-                <button id="cancel-crop-btn" class="px-5 py-2 rounded-lg font-semibold text-slate-600 bg-slate-100 hover:bg-slate-200 transition-colors">Cancel</button>
-                <button id="apply-crop-btn" class="px-5 py-2 rounded-lg font-bold text-white bg-teal-600 hover:bg-teal-700 transition-colors">Apply Crop</button>
-            </div>
-        </div>
-    </div>
-
     <!-- Main Content (Hidden until logged in) -->
     <div id="main-app" class="hidden flex-1 flex-col h-full overflow-hidden">
         
@@ -378,42 +409,42 @@
                             
                             <div class="grid grid-cols-2 md:grid-cols-3 gap-3">
                                 <label class="cursor-pointer">
-                                    <input type="radio" name="theme" value="layout-birthday" class="peer sr-only" checked>
+                                    <input type="radio" name="template" value="layout-classic" class="peer sr-only" checked>
                                     <div class="text-center px-2 py-3 border border-slate-200 rounded-lg peer-checked:border-teal-500 peer-checked:bg-teal-50 peer-checked:text-teal-700 transition-all font-semibold text-sm shadow-sm flex flex-col items-center gap-1">
                                         <div class="w-full h-8 bg-teal-500 rounded-sm mb-1 relative overflow-hidden"><div class="absolute bottom-0 w-full h-1/2 bg-slate-200"></div></div>
                                         Corporate Birthday
                                     </div>
                                 </label>
                                 <label class="cursor-pointer">
-                                    <input type="radio" name="theme" value="layout-premium" class="peer sr-only">
+                                    <input type="radio" name="template" value="layout-premium" class="peer sr-only">
                                     <div class="text-center px-2 py-3 border border-slate-200 rounded-lg peer-checked:border-amber-500 peer-checked:bg-amber-50 peer-checked:text-amber-700 transition-all font-semibold text-sm shadow-sm flex flex-col items-center gap-1">
                                         <div class="w-full h-8 bg-slate-900 rounded-sm mb-1 border border-slate-300"></div>
                                         Premium Gold
                                     </div>
                                 </label>
                                 <label class="cursor-pointer">
-                                    <input type="radio" name="theme" value="layout-anniversary" class="peer sr-only">
+                                    <input type="radio" name="template" value="layout-anniversary" class="peer sr-only">
                                     <div class="text-center px-2 py-3 border border-slate-200 rounded-lg peer-checked:border-emerald-500 peer-checked:bg-emerald-50 peer-checked:text-emerald-700 transition-all font-semibold text-sm shadow-sm flex flex-col items-center gap-1">
                                         <div class="w-full h-8 bg-gradient-to-r from-emerald-100 to-amber-100 rounded-sm mb-1"></div>
                                         Elegant Anniversary
                                     </div>
                                 </label>
                                 <label class="cursor-pointer">
-                                    <input type="radio" name="theme" value="layout-baby-boy" class="peer sr-only">
+                                    <input type="radio" name="template" value="layout-baby-boy" class="peer sr-only">
                                     <div class="text-center px-2 py-3 border border-slate-200 rounded-lg peer-checked:border-sky-500 peer-checked:bg-sky-50 peer-checked:text-sky-700 transition-all font-semibold text-sm shadow-sm flex flex-col items-center gap-1">
                                         <div class="w-full h-8 bg-sky-100 rounded-sm mb-1"></div>
                                         Baby Boy
                                     </div>
                                 </label>
                                 <label class="cursor-pointer">
-                                    <input type="radio" name="theme" value="layout-baby-girl" class="peer sr-only">
+                                    <input type="radio" name="template" value="layout-baby-girl" class="peer sr-only">
                                     <div class="text-center px-2 py-3 border border-slate-200 rounded-lg peer-checked:border-pink-500 peer-checked:bg-pink-50 peer-checked:text-pink-700 transition-all font-semibold text-sm shadow-sm flex flex-col items-center gap-1">
                                         <div class="w-full h-8 bg-pink-100 rounded-sm mb-1"></div>
                                         Baby Girl
                                     </div>
                                 </label>
                                 <label class="cursor-pointer">
-                                    <input type="radio" name="theme" value="layout-text-only" class="peer sr-only">
+                                    <input type="radio" name="template" value="layout-text-only" class="peer sr-only">
                                     <div class="text-center px-2 py-3 border border-slate-200 rounded-lg peer-checked:border-indigo-500 peer-checked:bg-indigo-50 peer-checked:text-indigo-700 transition-all font-semibold text-sm shadow-sm flex flex-col items-center gap-1">
                                         <div class="w-full h-8 bg-white border-2 border-slate-200 rounded-sm mb-1 flex items-center justify-center">
                                             <span class="text-slate-400 font-serif font-bold text-sm">T</span>
@@ -422,25 +453,35 @@
                                     </div>
                                 </label>
                             </div>
+
+                            <!-- Birthday Color Variations (Only shows when Corporate Teal is selected) -->
+                            <div id="birthday-color-picker" class="mt-4 transition-all duration-300">
+                                <label class="block text-xs font-semibold text-slate-500 uppercase tracking-wider mb-2">Corporate Theme Color</label>
+                                <div class="flex gap-3">
+                                    <button type="button" class="bday-color-btn w-8 h-8 rounded-full bg-[#50b4a6] ring-2 ring-offset-2 ring-teal-500 shadow-sm" data-primary="#50b4a6" data-ribbon="#008080" data-ring="ring-teal-500" data-logo="#0f172a"></button>
+                                    <button type="button" class="bday-color-btn w-8 h-8 rounded-full bg-[#22c55e] ring-2 ring-offset-2 ring-transparent shadow-sm" data-primary="#22c55e" data-ribbon="#16a34a" data-ring="ring-green-500" data-logo="#0f172a"></button>
+                                    <button type="button" class="bday-color-btn w-8 h-8 rounded-full bg-[#b45309] ring-2 ring-offset-2 ring-transparent shadow-sm" data-primary="#b45309" data-ribbon="#92400e" data-ring="ring-amber-600" data-logo="#0f172a"></button>
+                                    <button type="button" class="bday-color-btn w-8 h-8 rounded-full bg-[#1e3a8a] ring-2 ring-offset-2 ring-transparent shadow-sm" data-primary="#1e3a8a" data-ribbon="#1e40af" data-ring="ring-blue-800" data-logo="#ffffff"></button>
+                                    <button type="button" class="bday-color-btn w-8 h-8 rounded-full bg-[#e11d48] ring-2 ring-offset-2 ring-transparent shadow-sm" data-primary="#e11d48" data-ribbon="#be123c" data-ring="ring-rose-500" data-logo="#0f172a"></button>
+                                </div>
+                            </div>
                         </section>
 
                         <!-- 2. Details & Photo -->
                         <section class="space-y-4">
                             <h2 class="text-lg font-bold text-slate-800 border-b-2 border-teal-500 pb-1 inline-block">2. Person Details</h2>
                             
-                            <!-- Cloud Directory Select -->
-                            <div class="bg-teal-50 p-3 rounded-lg border border-teal-200">
-                                <label for="party-select" class="block text-xs font-bold text-teal-800 uppercase tracking-wider mb-1">☁️ Load from Directory</label>
-                                <select id="party-select" class="w-full px-3 py-2 text-sm border border-teal-300 rounded-md outline-none focus:border-teal-500 font-sans bg-white">
-                                    <option value="">-- Add Manually / Select Person --</option>
-                                    <!-- Options injected via Firestore -->
-                                </select>
-                            </div>
-
                             <div class="space-y-3">
                                 <div class="bg-slate-50 p-3 rounded-lg border border-slate-200 mb-4">
                                     <label class="block text-xs font-semibold text-slate-500 uppercase tracking-wider mb-2">Upload Profile Photo</label>
                                     <input id="photo-upload" type="file" class="block w-full text-xs text-slate-500 file:mr-3 file:py-2 file:px-4 file:rounded-md file:border-0 file:font-semibold file:bg-teal-600 file:text-white hover:file:bg-teal-700 cursor-pointer border border-slate-300 rounded-md bg-white p-1" accept="image/*" />
+                                </div>
+
+                                <div>
+                                    <label class="block text-xs font-semibold text-slate-500 uppercase tracking-wider mb-1">Directory</label>
+                                    <select id="party-select" class="w-full px-3 py-2 text-sm border border-slate-300 rounded-md outline-none focus:border-teal-500 bg-white">
+                                        <option value="">-- Add Manually / Select Person --</option>
+                                    </select>
                                 </div>
 
                                 <div>
@@ -449,18 +490,19 @@
                                 </div>
                                 <div>
                                     <label for="firm" class="block text-xs font-semibold text-slate-500 uppercase tracking-wider mb-1">Firm & Location / Subtitle <span class="text-red-500">*</span></label>
-                                    <input type="text" id="firm" placeholder="Firm Name" class="w-full px-4 py-2 text-sm border border-slate-300 rounded-md outline-none focus:border-teal-500" required />
+                                    <input type="text" id="firm" placeholder="Firm Name, Location" class="w-full px-4 py-2 text-sm border border-slate-300 rounded-md outline-none focus:border-teal-500" required />
                                 </div>
                                 <div>
                                     <label for="wish-date" class="block text-xs font-semibold text-slate-500 uppercase tracking-wider mb-1">Date (Optional)</label>
                                     <input type="date" id="wish-date" class="w-full px-4 py-2 text-sm border border-slate-300 rounded-md outline-none focus:border-teal-500" />
                                 </div>
 
-                                <button type="button" id="save-party-btn" class="w-full py-2 bg-white border-2 border-teal-600 text-teal-700 text-sm font-bold rounded-lg hover:bg-teal-50 transition-colors flex items-center justify-center gap-2">
-                                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7H5a2 2 0 00-2 2v9a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-3m-1 4l-3 3m0 0l-3-3m3 3V4"></path></svg>
-                                    Save to Directory
-                                </button>
-                                <div id="save-msg" class="text-xs text-center font-semibold text-teal-600 hidden">Saved successfully!</div>
+                                <div class="flex items-end gap-2 mt-2">
+                                    <button type="button" id="save-party-btn" class="w-full bg-slate-800 hover:bg-slate-700 text-white text-xs font-bold py-2 px-3 rounded shadow-sm transition-colors flex items-center justify-center gap-1">
+                                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7H5a2 2 0 00-2 2v9a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-3m-1 4l-3 3m0 0l-3-3m3 3V4"></path></svg> Save to Directory
+                                    </button>
+                                </div>
+                                <div id="save-msg" class="hidden text-xs text-green-600 font-semibold mt-1">Saved successfully!</div>
                             </div>
                         </section>
 
@@ -511,34 +553,50 @@
             </div>
 
             <!-- Right Column: Live Preview -->
-            <div class="w-full md:flex-1 flex flex-col items-center justify-start md:justify-center p-2 md:p-4 overflow-y-auto relative z-10 shrink-0 h-auto md:h-full bg-[url('data:image/svg+xml,%3Csvg width=\'20\' height=\'20\' viewBox=\'0 0 20 20\' xmlns=\'http://www.w3.org/2000/svg\'%3E%3Cg fill=\'%23cbd5e1\' fill-opacity=\'0.4\' fill-rule=\'evenodd\'%3E%3Ccircle cx=\'3\' cy=\'3\' r=\'3\'/%3E%3Ccircle cx=\'13\' cy=\'13\' r=\'3\'/%3E%3C/g%3E%3C/svg%3E')]">
+            <div class="w-full md:flex-1 flex flex-col items-center justify-start md:justify-center p-2 md:p-4 overflow-y-auto relative z-10 shrink-0 h-auto md:h-full bg-[url('data:image/svg+xml,%3Csvg width=\'20\' height=\'20\' viewBox=\'0 0 20\' xmlns=\'http://www.w3.org/2000/svg\'%3E%3Cg fill=\'%23cbd5e1\' fill-opacity=\'0.4\' fill-rule=\'evenodd\'%3E%3Ccircle cx=\'3\' cy=\'3\' r=\'3\'/%3E%3Ccircle cx=\'13\' cy=\'13\' r=\'3\'/%3E%3C/g%3E%3C/svg%3E')]">
                 
                 <div class="mb-2 md:mb-4 mt-2 md:mt-0 text-slate-500 text-xs md:text-sm font-semibold tracking-wide uppercase bg-white/90 backdrop-blur-sm px-4 py-1 rounded-full shadow-sm z-20">Live Preview</div>
 
                 <div id="preview-scale-wrapper" class="preview-scale-wrapper">
                     
                     <!-- MASTER PREVIEW CARD -->
-                    <div id="card-preview" class="card-container layout-birthday">
+                    <div id="card-preview" class="card-container layout-classic theme-classic-teal">
                         
-                        <!-- NEW VECTOR DECORATIONS LAYER -->
+                        <!-- VECTOR DECORATIONS LAYER (Z-Index 0) -->
                         <div class="absolute inset-0 z-0 pointer-events-none overflow-hidden">
-                            <!-- Corporate Birthday Vectors (Matching Corner Bracket & Layout) -->
-                            <div class="show-on-birthday absolute inset-0 z-0 pointer-events-none overflow-hidden">
-                                <!-- Top Left Corner Bracket -->
+                            <!-- Corporate Birthday Pattern -->
+                            <div class="show-on-classic absolute left-0 right-0 bottom-0 top-[32%] z-0 pointer-events-none overflow-hidden" style="color: var(--color-primary);">
+                                <svg width="100%" height="100%" xmlns="http://www.w3.org/2000/svg">
+                                    <defs>
+                                        <pattern id="bday-pattern" x="0" y="0" width="200" height="200" patternUnits="userSpaceOnUse">
+                                            <g fill="none" stroke="currentColor" stroke-width="1.5" opacity="0.15">
+                                                <path d="M40 50 C 30 30, 70 30, 60 50 C 55 60, 45 60, 40 50 Z"/>
+                                                <path d="M50 56 L50 80 M45 65 Q 55 70 45 75"/>
+                                                <rect x='130' y='120' width='40' height='40' rx='2'/>
+                                                <path d='M130 140 H170 M150 120 V160'/>
+                                                <path d='M150 120 C 140 110, 135 125, 150 120 C 160 110, 165 125, 150 120'/>
+                                                <path d='M160 40 L163 48 L172 48 L165 53 L167 61 L160 56 L153 61 L155 53 L148 48 L157 48 Z'/>
+                                                <path d='M20 150 L30 160 M90 20 L100 30 M80 160 A 10 10 0 0 1 100 170'/>
+                                                <path d='M90 100 L110 100 L100 70 Z'/>
+                                                <circle cx='100' cy='67' r='3'/>
+                                            </g>
+                                        </pattern>
+                                    </defs>
+                                    <rect width="100%" height="100%" fill="url(#bday-pattern)" />
+                                </svg>
+                            </div>
+
+                            <!-- Corporate Corner Brackets -->
+                            <div class="show-on-classic absolute inset-0 z-0 pointer-events-none overflow-hidden">
                                 <div class="absolute top-4 left-4 w-12 h-12 border-t-4 border-l-4 border-white opacity-90"></div>
-                                <!-- Top Right Corner Bracket -->
                                 <div class="absolute top-4 right-4 w-12 h-12 border-t-4 border-r-4 border-white opacity-90"></div>
                             </div>
                             
                             <!-- Premium Gold Vectors -->
                             <div class="show-on-premium-vector absolute inset-0 z-0 pointer-events-none overflow-hidden">
-                                <!-- Top Left Corner Bracket -->
                                 <div class="absolute top-5 left-5 w-16 h-16 border-t-2 border-l-2 border-[#fbbf24] opacity-70"></div>
-                                <!-- Top Right Corner Bracket -->
                                 <div class="absolute top-5 right-5 w-16 h-16 border-t-2 border-r-2 border-[#fbbf24] opacity-70"></div>
-                                <!-- Bottom Left Corner Bracket -->
                                 <div class="absolute bottom-5 left-5 w-16 h-16 border-b-2 border-l-2 border-[#fbbf24] opacity-70"></div>
-                                <!-- Bottom Right Corner Bracket -->
                                 <div class="absolute bottom-5 right-5 w-16 h-16 border-b-2 border-r-2 border-[#fbbf24] opacity-70"></div>
                             </div>
 
@@ -546,10 +604,8 @@
                             <svg class="show-on-text-only absolute inset-0 w-full h-full opacity-90" viewBox="0 0 500 650" fill="none" stroke="#fbbf24" stroke-width="2">
                                 <rect x="20" y="20" width="460" height="610" rx="15" />
                                 <rect x="32" y="32" width="436" height="586" rx="8" stroke-width="1" stroke-dasharray="4 6" opacity="0.7"/>
-                                <!-- Elegant corner flourishes -->
                                 <path d="M 20,60 Q 60,60 60,20 M 480,60 Q 440,60 440,20 M 20,590 Q 60,590 60,630 M 480,590 Q 440,590 440,630" />
                                 <path d="M 20,80 Q 80,80 80,20 M 480,80 Q 420,80 420,20 M 20,570 Q 80,570 80,630 M 480,570 Q 420,570 420,630" opacity="0.5"/>
-                                <!-- Floating stars -->
                                 <path d="M 100,120 L 103,130 L 113,133 L 103,136 L 100,146 L 97,136 L 87,133 L 97,130 Z" fill="#fbbf24" stroke="none" opacity="0.6"/>
                                 <path d="M 400,200 L 402,206 L 408,208 L 402,210 L 400,216 L 398,210 L 392,208 L 398,206 Z" fill="#fbbf24" stroke="none" opacity="0.8"/>
                                 <path d="M 80,500 L 82,506 L 88,508 L 82,510 L 80,516 L 78,510 L 72,508 L 78,506 Z" fill="#fbbf24" stroke="none" opacity="0.5"/>
@@ -588,26 +644,26 @@
                         </div>
 
                         <!-- Top Logo (Only visible on Anniversary/Elegant themes) -->
-                        <div class="top-logo-wrapper">
-                            <img src="logo.png" alt="Indus Logo" class="h-14 object-contain dynamic-logo" onerror="this.src='https://placehold.co/200x50/transparent/0f172a?text=INDUS+FOOTWEAR'">
+                        <div class="top-logo-wrapper relative z-20">
+                            <img src="logo.png" alt="Indus Logo" class="h-14 w-auto dynamic-logo object-contain drop-shadow-sm" crossorigin="anonymous" onerror="this.onerror=null; this.src='https://placehold.co/300x100/transparent/0f172a?text=Indus+Logo';">
                         </div>
 
                         <!-- Header Area -->
-                        <div class="card-header">
+                        <div class="card-header relative z-20">
                             <h1 id="preview-occasion" class="text-heading">HAPPY BIRTHDAY</h1>
                             <!-- Baby Layout Subtitles -->
                             <h2 class="sub-heading show-on-baby">It's a Boy!</h2>
                         </div>
 
                         <!-- Photo Area -->
-                        <div class="photo-wrapper">
+                        <div class="photo-wrapper relative z-20">
                             <div class="photo-mask">
                                 <img id="preview-photo" class="inner-photo" src="https://placehold.co/400x400/cbd5e1/475569?text=Upload+Photo" alt="Profile" crossorigin="anonymous">
                             </div>
                         </div>
 
                         <!-- Details Area -->
-                        <div class="name-wrapper flex flex-col items-center">
+                        <div class="name-wrapper flex flex-col items-center relative z-20">
                             <span class="show-on-elegant text-sm font-serif italic text-slate-600 mb-1">Warm Wishes to</span>
                             <div id="preview-name" class="name-banner">Mr. Party Name Ji</div>
                             <p id="preview-firm" class="text-firm">Firm Name, Location</p>
@@ -620,7 +676,7 @@
                         </div>
 
                         <!-- Message Area -->
-                        <div class="message-wrapper">
+                        <div class="message-wrapper relative z-20">
                             <p id="preview-message" class="text-message dynamic-text">
                                 May your day be as bright, strong, and inspiring as the role you play in our journey. Your dedication and partnership mean a lot to us at Indus Footwear.
                             </p>
@@ -633,11 +689,11 @@
                         </div>
 
                         <!-- Horizontal Divider line for Corporate Birthday logo -->
-                        <div class="show-on-birthday w-5/6 h-[1px] bg-teal-600/40 mx-auto mt-auto mb-2 relative z-20"></div>
+                        <div class="show-on-classic w-5/6 h-[1px] mx-auto mt-auto mb-2 relative z-20" style="background-color: var(--color-primary); opacity: 0.4;"></div>
 
                         <!-- Bottom Logo Area (Standard) -->
-                        <div class="bottom-logo-wrapper">
-                            <img src="logo.png" alt="Indus Logo" class="h-14 object-contain dynamic-logo" onerror="this.src='https://placehold.co/200x50/transparent/0f172a?text=INDUS+FOOTWEAR'">
+                        <div class="bottom-logo-wrapper relative z-20">
+                            <img src="logo.png" alt="Indus Logo" class="h-14 w-auto dynamic-logo object-contain drop-shadow-sm" crossorigin="anonymous" onerror="this.onerror=null; this.src='https://placehold.co/300x100/transparent/0f172a?text=Indus+Logo';">
                         </div>
 
                     </div>
@@ -646,12 +702,12 @@
         </main>
     </div>
 
-    <!-- FIREBASE AND APP LOGIC -->
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
         import { getAuth, signInWithEmailAndPassword, createUserWithEmailAndPassword, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
         import { getFirestore, collection, addDoc, onSnapshot } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
 
+        // Hardcoded standard configuration for external deployments
         const firebaseConfig = {
             apiKey: "AIzaSyAWr8tSoGfTZ8oGDF0LCBYkeGyZ6EwDrZU",
             authDomain: "indus-footwear-greeting-app.firebaseapp.com",
@@ -882,7 +938,7 @@
         // UI & App Logic
         document.addEventListener('DOMContentLoaded', () => {
             const messages = {
-                'layout-birthday': "May your day be as bright, strong, and inspiring as the role you play in our journey. Your dedication and partnership mean a lot to us at Indus Footwear.",
+                'layout-classic': "May your day be as bright, strong, and inspiring as the role you play in our journey. Your dedication and partnership mean a lot to us at Indus Footwear.",
                 'layout-premium': "“May your life be filled with happiness, success follow your every step, and the coming year bring new achievements!”",
                 'layout-anniversary': "Wishing you both a lifetime of happiness, harmony, and continued success together.",
                 'layout-baby-boy': "Heartfelt congratulations on the arrival of your baby boy. Wishing your little one a future filled with joy, love, and endless blessings.",
@@ -891,7 +947,7 @@
             };
 
             const headings = {
-                'layout-birthday': 'HAPPY BIRTHDAY',
+                'layout-classic': 'HAPPY BIRTHDAY',
                 'layout-premium': 'Birthday',
                 'layout-anniversary': 'Happy Wedding Anniversary',
                 'layout-baby-boy': 'Congratulations',
@@ -900,7 +956,8 @@
             };
 
             const formInputs = {
-                theme: document.getElementsByName('theme'),
+                occasion: document.getElementsByName('occasion'),
+                template: document.getElementsByName('template'),
                 fontStyle: document.getElementById('message-font'),
                 fontSize: document.getElementById('font-size-slider'),
                 alignBtns: document.querySelectorAll('.align-btn'),
@@ -922,8 +979,11 @@
                 date: document.getElementById('preview-date')
             };
 
-            // Init Default texts
-            formInputs.message.value = messages['layout-birthday'];
+            // Init Default text
+            formInputs.message.value = messages['layout-classic'];
+            const today = new Date();
+            formInputs.date.value = today.toISOString().split('T')[0];
+            previewElements.date.textContent = today.toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' });
 
             // Handle Directory Selection Mapping
             partySelect.addEventListener('change', (e) => {
@@ -943,13 +1003,31 @@
                 }
             });
 
-            // Theme Mapping -> Triggers Complete Layout Overhaul
-            formInputs.theme.forEach(radio => {
+            // Handle Templates & Colors
+            const templateMappings = {
+                'layout-classic': { theme: 'theme-classic-teal', layout: 'layout-classic' },
+                'layout-premium': { theme: 'theme-royal-gold', layout: 'layout-premium' },
+                'layout-anniversary': { theme: 'theme-festive-ruby', layout: 'layout-anniversary' },
+                'layout-baby-boy': { theme: 'theme-baby-boy', layout: 'layout-baby-boy' },
+                'layout-baby-girl': { theme: 'theme-baby-girl', layout: 'layout-baby-girl' },
+                'layout-text-only': { theme: 'theme-text-only', layout: 'layout-text-only' }
+            };
+
+            formInputs.template.forEach(radio => {
                 radio.addEventListener('change', (e) => {
+                    // clear old classes & inline styles
+                    previewElements.card.className = "card-container"; 
+                    previewElements.card.style.removeProperty('--color-primary');
+                    previewElements.card.style.removeProperty('--color-ribbon');
+                    previewElements.card.style.removeProperty('--color-firm');
+                    previewElements.card.style.removeProperty('--color-logo');
+
                     const theme = e.target.value;
-                    
+                    const map = templateMappings[theme];
+                    previewElements.card.classList.add(map.theme, map.layout);
+
+                    // Update Headers and Text based on theme
                     previewElements.occasion.textContent = headings[theme];
-                    
                     if (theme === 'layout-baby-boy') {
                         previewElements.subheading.textContent = "It's a Boy!";
                     } else if (theme === 'layout-baby-girl') {
@@ -959,9 +1037,39 @@
                     formInputs.message.value = messages[theme];
                     previewElements.message.textContent = formInputs.message.value;
 
-                    // Update Master CSS Class
-                    previewElements.card.className = "card-container transition-all duration-500"; 
-                    previewElements.card.classList.add(theme);
+                    // Handle dynamic color picker visibility
+                    const colorPicker = document.getElementById('birthday-color-picker');
+                    if (theme === 'layout-classic') {
+                        colorPicker.classList.remove('hidden');
+                    } else {
+                        colorPicker.classList.add('hidden');
+                    }
+                    
+                    if(map.layout === 'layout-polaroid' || map.layout === 'layout-elegant' || map.layout === 'layout-text-only' || map.layout === 'layout-premium') {
+                        previewElements.name.classList.remove('bg-ribbon');
+                    } else {
+                        previewElements.name.classList.add('bg-ribbon');
+                    }
+                });
+            });
+
+            // Birthday Corporate Template - Color Swatches Logic
+            const colorBtns = document.querySelectorAll('.bday-color-btn');
+            colorBtns.forEach(btn => {
+                btn.addEventListener('click', () => {
+                    // Update active ring on buttons
+                    colorBtns.forEach(b => {
+                        b.classList.remove(b.dataset.ring);
+                        b.classList.add('ring-transparent');
+                    });
+                    btn.classList.remove('ring-transparent');
+                    btn.classList.add(btn.dataset.ring);
+
+                    // Update CSS variables for the preview container
+                    previewElements.card.style.setProperty('--color-primary', btn.dataset.primary);
+                    previewElements.card.style.setProperty('--color-ribbon', btn.dataset.ribbon);
+                    previewElements.card.style.setProperty('--color-firm', btn.dataset.ribbon);
+                    previewElements.card.style.setProperty('--color-logo', btn.dataset.logo);
                 });
             });
 
@@ -994,7 +1102,7 @@
                 });
             });
 
-            // Live Text Updates
+            // Text Updates
             formInputs.name.addEventListener('input', (e) => { previewElements.name.textContent = e.target.value.trim() || 'Mr. Party Name Ji'; partySelect.value = ""; });
             formInputs.firm.addEventListener('input', (e) => { previewElements.firm.textContent = e.target.value.trim() || 'Firm Name, Location'; partySelect.value = ""; });
             formInputs.message.addEventListener('input', (e) => { previewElements.message.textContent = e.target.value.trim(); });
@@ -1006,6 +1114,32 @@
                     previewElements.date.textContent = '';
                 }
             });
+
+            // Occasion Buttons Mapping (Quick Set)
+            if (formInputs.occasion) {
+                formInputs.occasion.forEach(radio => {
+                    radio.addEventListener('change', (e) => {
+                        const occasion = e.target.value;
+                        let templateRadioToSelect = 'layout-classic';
+                        
+                        if (occasion === 'birthday') {
+                            templateRadioToSelect = 'layout-classic';
+                        } else if (occasion === 'anniversary') {
+                            templateRadioToSelect = 'layout-anniversary';
+                        } else if (occasion === 'babyboy') {
+                            templateRadioToSelect = 'layout-baby-boy';
+                        } else if (occasion === 'babygirl') {
+                            templateRadioToSelect = 'layout-baby-girl';
+                        }
+                        
+                        const targetRadio = document.querySelector(`input[name="template"][value="${templateRadioToSelect}"]`);
+                        if (targetRadio) {
+                            targetRadio.checked = true;
+                            targetRadio.dispatchEvent(new Event('change'));
+                        }
+                    });
+                });
+            }
 
             // Cropper Logic
             let cropper = null;
@@ -1072,7 +1206,7 @@
             const downloadBtn = document.getElementById('download-btn');
             const downloadText = document.getElementById('download-text');
             
-            downloadBtn.addEventListener('click', () => {
+            downloadBtn.addEventListener('click', async () => {
                 const nameVal = formInputs.name.value.trim();
                 const firmVal = formInputs.firm.value.trim();
                 
@@ -1091,10 +1225,44 @@
                 }
                 
                 const originalText = downloadText.innerHTML;
-                downloadText.innerHTML = `Processing High-Res Image...`;
+                downloadText.innerHTML = `Generating High-Res...`;
                 downloadBtn.disabled = true;
 
                 window.scrollTo(0, 0);
+
+                // --- NEW LOGIC: Pre-process golden logos to fix html2canvas filter limitation ---
+                const theme = document.querySelector('input[name="template"]:checked').value;
+                const needsGoldenLogo = theme === 'layout-premium' || theme === 'layout-text-only';
+                const logos = document.querySelectorAll('.dynamic-logo');
+                const originalLogoState = [];
+
+                if (needsGoldenLogo) {
+                    logos.forEach(logo => {
+                        originalLogoState.push({ src: logo.src, filter: logo.style.filter });
+                        try {
+                            // Create a hidden canvas to "bake" the gold color directly into the pixels
+                            const cvs = document.createElement('canvas');
+                            cvs.width = logo.naturalWidth || logo.width || 300;
+                            cvs.height = logo.naturalHeight || logo.height || 100;
+                            const ctx = cvs.getContext('2d');
+                            
+                            ctx.drawImage(logo, 0, 0, cvs.width, cvs.height);
+                            ctx.globalCompositeOperation = 'source-in';
+                            ctx.fillStyle = '#fbbf24'; // Premium Gold Hex Color
+                            ctx.fillRect(0, 0, cvs.width, cvs.height);
+                            
+                            // Swap image to the baked data URL and disable CSS filters
+                            logo.src = cvs.toDataURL('image/png');
+                            logo.style.filter = 'none'; 
+                        } catch(e) {
+                            console.warn("Canvas tinting skipped due to CORS, falling back.", e);
+                        }
+                    });
+                    
+                    // Pause briefly to let the DOM paint the new base64 images
+                    await new Promise(resolve => setTimeout(resolve, 50));
+                }
+                // ---------------------------------------------------------------------------------
 
                 setTimeout(() => {
                     html2canvas(previewElements.card, {
@@ -1116,10 +1284,17 @@
                         },
                         logging: false
                     }).then(canvas => {
+                        // Restore original logo state immediately after processing
+                        if (needsGoldenLogo) {
+                            logos.forEach((logo, idx) => {
+                                logo.src = originalLogoState[idx].src;
+                                logo.style.filter = originalLogoState[idx].filter || '';
+                            });
+                        }
+
                         const imgData = canvas.toDataURL('image/png', 1.0);
                         const link = document.createElement('a');
                         const userName = nameVal.replace(/\s+/g, '_') || 'Partner';
-                        const theme = document.querySelector('input[name="theme"]:checked').value;
                         const suffix = theme.split('-').pop();
                         
                         link.download = `Indus_${suffix}_${userName}.png`;
@@ -1129,6 +1304,14 @@
                         downloadText.innerHTML = originalText;
                         downloadBtn.disabled = false;
                     }).catch(err => {
+                        // Restore original logo state in case of an error
+                        if (needsGoldenLogo) {
+                            logos.forEach((logo, idx) => {
+                                logo.src = originalLogoState[idx].src;
+                                logo.style.filter = originalLogoState[idx].filter || '';
+                            });
+                        }
+                        
                         console.error("Error generating image:", err);
                         downloadText.innerHTML = `❌ Error Generating`;
                         setTimeout(() => {
