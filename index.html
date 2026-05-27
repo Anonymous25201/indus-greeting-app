@@ -54,10 +54,13 @@
             font-size: var(--msg-size); 
             text-align: var(--msg-align); 
         }
-        .inner-photo { width: 100%; height: 100%; background-position: center; background-size: cover; }
+        .inner-photo { width: 100%; height: 100%; object-fit: cover; object-position: center; display: block; }
         
         /* Helper to hide elements based on layout */
-        .show-on-elegant, .show-on-premium, .show-on-baby { display: none; }
+        .show-on-elegant, .show-on-premium, .show-on-baby, .show-on-baby-boy, .show-on-baby-girl, .show-on-text-only { display: none; }
+
+        /* Default state for top logo - Hidden to prevent appearing on birthday/premium */
+        .top-logo-wrapper { display: none; }
 
         /* =========================================
            LAYOUT 1: CORPORATE RIBBON (Birthday Default)
@@ -160,6 +163,8 @@
         .layout-baby-girl { background: linear-gradient(180deg, #fdf2f8 0%, #fce7f3 100%); color: #831843; }
         
         .layout-baby-boy .show-on-baby, .layout-baby-girl .show-on-baby { display: block; text-align: center; z-index: 10;}
+        .layout-baby-boy .show-on-baby-boy { display: block; }
+        .layout-baby-girl .show-on-baby-girl { display: block; }
         .layout-baby-boy::after, .layout-baby-girl::after { content: ""; position: absolute; inset: 0; background-image: radial-gradient(white 2px, transparent 2px); background-size: 30px 30px; opacity: 0.3; pointer-events: none;}
 
         .layout-baby-boy .card-header, .layout-baby-girl .card-header { padding-top: 40px; text-align: center; z-index: 10; }
@@ -185,6 +190,21 @@
         
         .layout-baby-boy .bottom-logo-wrapper, .layout-baby-girl .bottom-logo-wrapper { display: flex; justify-content: center; align-items: flex-end; padding-bottom: 30px; height: 80px; z-index: 10;}
 
+        /* =========================================
+           LAYOUT 5: TEXT ONLY BIRTHDAY
+           ========================================= */
+        .layout-text-only { background: radial-gradient(circle at top, #1e3a8a 0%, #020617 100%); color: #f8fafc; border: none; outline: none; }
+        .layout-text-only .show-on-text-only { display: block; }
+        .layout-text-only .photo-wrapper { display: none; } /* Hide the photo completely */
+        .layout-text-only .card-header { padding-top: 80px; text-align: center; z-index: 10; }
+        .layout-text-only .text-heading { color: #fbbf24; font-family: 'Cinzel', serif; font-size: 3.5rem; font-weight: 700; letter-spacing: 0.1em; line-height: 1.1; text-shadow: 0 4px 15px rgba(251,191,36,0.3); }
+        .layout-text-only .text-heading::after { content: ''; display: block; width: 100px; height: 3px; background-color: #fbbf24; margin: 25px auto 0; box-shadow: 0 0 10px rgba(251,191,36,0.5); }
+        .layout-text-only .name-wrapper { text-align: center; margin-top: 50px; z-index: 10; }
+        .layout-text-only .name-banner { background: transparent; color: #fde047; font-family: 'Great Vibes', cursive; font-size: 3rem; font-weight: 400; padding: 0; clip-path: none; text-shadow: 0 2px 10px rgba(253,224,71,0.2); }
+        .layout-text-only .text-firm { text-align: center; color: #94a3b8; font-family: 'Montserrat', sans-serif; font-size: 1rem; font-weight: 600; text-transform: uppercase; letter-spacing: 3px; margin-top: 10px; }
+        .layout-text-only .message-wrapper { padding: 0 60px; margin-top: 40px; flex-grow: 1; display: flex; flex-direction: column; justify-content: flex-start; z-index: 10; }
+        .layout-text-only .text-message { font-size: 1.15rem; font-weight: 500; line-height: 1.8; color: #e2e8f0; font-style: italic; }
+        .layout-text-only .bottom-logo-wrapper { display: flex; justify-content: center; align-items: flex-end; padding-bottom: 40px; height: 100px; z-index: 10; filter: drop-shadow(0px 0px 3px rgba(255,255,255,0.7)); }
 
         /* Form Scrollbar */
         .custom-scroll::-webkit-scrollbar { width: 6px; }
@@ -247,7 +267,7 @@
                         <section class="space-y-4">
                             <h2 class="text-lg font-bold text-slate-800 border-b-2 border-teal-500 pb-1 inline-block">1. Select Poster Theme</h2>
                             
-                            <div class="grid grid-cols-2 gap-3">
+                            <div class="grid grid-cols-2 md:grid-cols-3 gap-3">
                                 <label class="cursor-pointer">
                                     <input type="radio" name="theme" value="layout-birthday" class="peer sr-only" checked>
                                     <div class="text-center px-2 py-3 border border-slate-200 rounded-lg peer-checked:border-teal-500 peer-checked:bg-teal-50 peer-checked:text-teal-700 transition-all font-semibold text-sm shadow-sm flex flex-col items-center gap-1">
@@ -281,6 +301,15 @@
                                     <div class="text-center px-2 py-3 border border-slate-200 rounded-lg peer-checked:border-pink-500 peer-checked:bg-pink-50 peer-checked:text-pink-700 transition-all font-semibold text-sm shadow-sm flex flex-col items-center gap-1">
                                         <div class="w-full h-8 bg-pink-100 rounded-sm mb-1"></div>
                                         Baby Girl
+                                    </div>
+                                </label>
+                                <label class="cursor-pointer">
+                                    <input type="radio" name="theme" value="layout-text-only" class="peer sr-only">
+                                    <div class="text-center px-2 py-3 border border-slate-200 rounded-lg peer-checked:border-indigo-500 peer-checked:bg-indigo-50 peer-checked:text-indigo-700 transition-all font-semibold text-sm shadow-sm flex flex-col items-center gap-1">
+                                        <div class="w-full h-8 bg-white border-2 border-slate-200 rounded-sm mb-1 flex items-center justify-center">
+                                            <span class="text-slate-400 font-serif font-bold text-sm">T</span>
+                                        </div>
+                                        Text Only
                                     </div>
                                 </label>
                             </div>
@@ -367,9 +396,56 @@
                     <!-- MASTER PREVIEW CARD -->
                     <div id="card-preview" class="card-container layout-birthday">
                         
+                        <!-- NEW VECTOR DECORATIONS LAYER -->
+                        <div class="absolute inset-0 z-0 pointer-events-none overflow-hidden">
+                            <!-- Text Only Golden Vectors -->
+                            <svg class="show-on-text-only absolute inset-0 w-full h-full opacity-90" viewBox="0 0 500 650" fill="none" stroke="#fbbf24" stroke-width="2">
+                                <rect x="20" y="20" width="460" height="610" rx="15" />
+                                <rect x="32" y="32" width="436" height="586" rx="8" stroke-width="1" stroke-dasharray="4 6" opacity="0.7"/>
+                                <!-- Elegant corner flourishes -->
+                                <path d="M 20,60 Q 60,60 60,20 M 480,60 Q 440,60 440,20 M 20,590 Q 60,590 60,630 M 480,590 Q 440,590 440,630" />
+                                <path d="M 20,80 Q 80,80 80,20 M 480,80 Q 420,80 420,20 M 20,570 Q 80,570 80,630 M 480,570 Q 420,570 420,630" opacity="0.5"/>
+                                <!-- Floating stars -->
+                                <path d="M 100,120 L 103,130 L 113,133 L 103,136 L 100,146 L 97,136 L 87,133 L 97,130 Z" fill="#fbbf24" stroke="none" opacity="0.6"/>
+                                <path d="M 400,200 L 402,206 L 408,208 L 402,210 L 400,216 L 398,210 L 392,208 L 398,206 Z" fill="#fbbf24" stroke="none" opacity="0.8"/>
+                                <path d="M 80,500 L 82,506 L 88,508 L 82,510 L 80,516 L 78,510 L 72,508 L 78,506 Z" fill="#fbbf24" stroke="none" opacity="0.5"/>
+                                <path d="M 420,450 L 423,460 L 433,463 L 423,466 L 420,476 L 417,466 L 407,463 L 417,460 Z" fill="#fbbf24" stroke="none" opacity="0.7"/>
+                            </svg>
+
+                            <!-- Baby Boy Vectors -->
+                            <svg class="show-on-baby-boy absolute bottom-32 right-8 w-24 h-24 opacity-90 drop-shadow-md" viewBox="0 0 100 100" fill="#38bdf8">
+                                <path d="M50 20 A 30 30 0 0 0 20 50 L 80 50 A 30 30 0 0 0 50 20 Z" />
+                                <rect x="20" y="50" width="60" height="20" rx="5" />
+                                <circle cx="35" cy="80" r="10" fill="#0284c7" />
+                                <circle cx="65" cy="80" r="10" fill="#0284c7" />
+                                <path d="M20 50 Q 10 30 5 30" stroke="#0284c7" stroke-width="6" fill="none" stroke-linecap="round"/>
+                                <path d="M50 30 L 52 38 L 60 38 L 54 42 L 56 50 L 50 45 L 44 50 L 46 42 L 40 38 L 48 38 Z" fill="#fff"/>
+                            </svg>
+                            <svg class="show-on-baby-boy absolute top-20 left-6 w-24 h-24 opacity-60" viewBox="0 0 100 100" fill="#7dd3fc">
+                                <path d="M30 60 A 20 20 0 0 1 50 20 A 25 25 0 0 1 80 40 A 20 20 0 0 1 70 80 L 30 80 A 15 15 0 0 1 30 60 Z"/>
+                                <circle cx="20" cy="30" r="4" fill="#0284c7" opacity="0.5"/>
+                                <circle cx="85" cy="20" r="6" fill="#0284c7" opacity="0.5"/>
+                            </svg>
+
+                            <!-- Baby Girl Vectors -->
+                            <svg class="show-on-baby-girl absolute bottom-32 left-8 w-24 h-24 opacity-90 drop-shadow-md" viewBox="0 0 100 100" fill="#f472b6" style="transform: scaleX(-1);">
+                                <path d="M50 20 A 30 30 0 0 0 20 50 L 80 50 A 30 30 0 0 0 50 20 Z" />
+                                <rect x="20" y="50" width="60" height="20" rx="5" />
+                                <circle cx="35" cy="80" r="10" fill="#be185d" />
+                                <circle cx="65" cy="80" r="10" fill="#be185d" />
+                                <path d="M20 50 Q 10 30 5 30" stroke="#be185d" stroke-width="6" fill="none" stroke-linecap="round"/>
+                                <path d="M50 45 L 46 40 A 4 4 0 0 1 50 35 A 4 4 0 0 1 54 40 Z" fill="#fff"/>
+                            </svg>
+                            <svg class="show-on-baby-girl absolute top-20 right-6 w-24 h-24 opacity-60" viewBox="0 0 100 100" fill="#fbcfe8">
+                                <path d="M30 60 A 20 20 0 0 1 50 20 A 25 25 0 0 1 80 40 A 20 20 0 0 1 70 80 L 30 80 A 15 15 0 0 1 30 60 Z"/>
+                                <path d="M80 25 L 75 20 A 5 5 0 0 1 85 20 Z" fill="#be185d" opacity="0.5"/>
+                                <path d="M15 45 L 10 40 A 5 5 0 0 1 20 40 Z" fill="#be185d" opacity="0.5"/>
+                            </svg>
+                        </div>
+
                         <!-- Top Logo (Only visible on Anniversary/Elegant themes) -->
                         <div class="top-logo-wrapper">
-                            <img src="indus-logo1.png" alt="Indus Logo" class="h-10 object-contain" onerror="this.src='this.src='https://placehold.co/200x50/transparent/0f172a?text=INDUS+FOOTWEAR''">
+                            <img src="logo.png" alt="Indus Logo" class="h-10 object-contain" onerror="this.src='https://placehold.co/200x50/transparent/0f172a?text=INDUS+FOOTWEAR'">
                         </div>
 
                         <!-- Header Area -->
@@ -382,7 +458,7 @@
                         <!-- Photo Area -->
                         <div class="photo-wrapper">
                             <div class="photo-mask">
-                                <div id="preview-photo" class="inner-photo" style="background-image: url('https://placehold.co/400x400/cbd5e1/475569?text=Upload+Photo');"></div>
+                                <img id="preview-photo" class="inner-photo" src="https://placehold.co/400x400/cbd5e1/475569?text=Upload+Photo" alt="Profile" crossorigin="anonymous">
                             </div>
                         </div>
 
@@ -414,7 +490,7 @@
 
                         <!-- Bottom Logo Area (Standard) -->
                         <div class="bottom-logo-wrapper">
-                            <img src="indus-logo1.png" alt="Indus Logo" class="h-10 object-contain" onerror="this.src='https://placehold.co/200x50/transparent/0f172a?text=INDUS+FOOTWEAR'">
+                            <img src="logo.png" alt="Indus Logo" class="h-10 object-contain" onerror="this.src='https://placehold.co/200x50/transparent/0f172a?text=INDUS+FOOTWEAR'">
                         </div>
 
                     </div>
@@ -433,7 +509,8 @@
                 'layout-premium': "“May your life be filled with happiness, success follow your every step, and the coming year bring new achievements!”",
                 'layout-anniversary': "Wishing you both a lifetime of happiness, harmony, and continued success together.",
                 'layout-baby-boy': "Heartfelt congratulations on the arrival of your baby boy. Wishing your little one a future filled with joy, love, and endless blessings.",
-                'layout-baby-girl': "Heartfelt congratulations on the arrival of your baby girl. Wishing your little one a future filled with joy, love, and endless blessings."
+                'layout-baby-girl': "Heartfelt congratulations on the arrival of your baby girl. Wishing your little one a future filled with joy, love, and endless blessings.",
+                'layout-text-only': "Wishing you a spectacular birthday! May your day be filled with wonderful moments, and the year ahead bring you endless success, joy, and prosperity."
             };
 
             const headings = {
@@ -441,7 +518,8 @@
                 'layout-premium': 'Birthday',
                 'layout-anniversary': 'Happy Wedding Anniversary',
                 'layout-baby-boy': 'Congratulations',
-                'layout-baby-girl': 'Congratulations'
+                'layout-baby-girl': 'Congratulations',
+                'layout-text-only': 'HAPPY BIRTHDAY'
             };
 
             const formInputs = {
@@ -586,16 +664,17 @@
             applyCropBtn.addEventListener('click', () => {
                 if(!cropper) return;
                 
-                // HIGH RESOLUTION CROP EXPORT (800x800px instead of default viewport)
+                // HIGH RESOLUTION CROP EXPORT (Use native resolution up to 1200px to prevent blur on small crops)
                 const canvas = cropper.getCroppedCanvas({
-                    width: 800,
-                    height: 800,
+                    maxWidth: 1200,
+                    maxHeight: 1200,
+                    fillColor: '#fff',
                     imageSmoothingEnabled: true,
                     imageSmoothingQuality: 'high',
                 });
                 
-                // Using PNG ensures lossless, unblurred transfer to the preview pane
-                previewElements.photo.style.backgroundImage = `url(${canvas.toDataURL('image/png')})`;
+                // Using PNG ensures lossless transfer. Using native <img> tag fixes html2canvas background-image blur
+                previewElements.photo.src = canvas.toDataURL('image/png', 1.0);
                 closeCropper();
             });
 
